@@ -1,4 +1,4 @@
-package java.com.jermowery;
+package com.jermowery.audio;
 
 public class CovertToAudioMain {
   public static void main(String[] args) {

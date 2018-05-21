@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="guice-4.2.0-ijar_4ea950ea">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.cache/bazel/_bazel_jermowery/0ac2afbc294c5f4d37bd42653265d4fe/execroot/__main__/bazel-out/k8-fastbuild/genfiles/external/com_google_inject_guice/jar/_ijar/jar/external/com_google_inject_guice/jar/guice-4.2.0-ijar.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

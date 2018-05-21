@@ -1,30 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module external.system.id="Blaze" type="JAVA_MODULE" version="4">
-  <component name="FacetManager">
-    <facet type="Python" name="Python">
-      <configuration sdkName="Python 2.7" />
-    </facet>
-  </component>
-  <component name="G3PluginsModuleSettings">
-    <appliedSettings>
-      <entry key="PyDocstringFormatSetting" value="true" />
-    </appliedSettings>
-  </component>
   <component name="NewModuleRootManager">
     <exclude-output />
-    <content url="file://$MODULE_DIR$/../../..">
-      <sourceFolder url="file://$MODULE_DIR$/../../.." isTestSource="false" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../bazel-bin" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../bazel-genfiles" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../bazel-out" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../bazel-testlogs" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../bazel-tts" />
+    <content url="file://$MODULE_DIR$/../../../java">
+      <sourceFolder url="file://$MODULE_DIR$/../../../java" isTestSource="false" packagePrefix="java" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../java/com" isTestSource="false" packagePrefix="com" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../../javatests">
+      <sourceFolder url="file://$MODULE_DIR$/../../../javatests" isTestSource="true" packagePrefix="javatests" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../javatests/com" isTestSource="true" packagePrefix="com" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../../third_party">
+      <sourceFolder url="file://$MODULE_DIR$/../../../third_party" isTestSource="false" packagePrefix="third_party" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Python 2.7 interpreter library" level="application" />
-  </component>
-  <component name="PyDocumentationSettings">
-    <option name="myDocStringFormat" value="Google" />
+    <orderEntry type="library" name="mockito-all-2.0.2-beta-ijar_5192524a" level="project" />
+    <orderEntry type="library" name="junit-4.12-ijar_892dfd2a" level="project" />
+    <orderEntry type="library" name="guice-4.2.0-ijar_4ea950ea" level="project" />
+    <orderEntry type="library" name="guava-25.0-jre-ijar_47d75ab2" level="project" />
+    <orderEntry type="library" name="libcom_google_inject_guice_f8917175" level="project" />
+    <orderEntry type="library" name="libcom_beust_jcommander_f8917175" level="project" />
+    <orderEntry type="library" name="liborg_mockito_mockito_all_f8917175" level="project" />
+    <orderEntry type="library" name="truth-0.40-ijar_384454e6" level="project" />
+    <orderEntry type="library" name="jcommander-1.72-ijar_6fbfdcf8" level="project" />
+    <orderEntry type="library" name="libjunit_junit_f8917175" level="project" />
+    <orderEntry type="library" name="libcom_google_truth_truth_f8917175" level="project" />
+    <orderEntry type="library" name="libcom_google_guava_guava_f8917175" level="project" />
   </component>
 </module>

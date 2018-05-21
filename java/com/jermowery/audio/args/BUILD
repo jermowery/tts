@@ -1,9 +1,8 @@
-java_binary(
-    name = "audio",
+java_library(
+    name = "args",
     srcs = glob(["*.java"]),
-    main_class = "com.jermowery.audio.CovertToAudioMain",
+    visibility = ["//visibility:public"],
     deps = [
-        "//java/com/jermowery/audio/args",
         "//third_party:com_beust_jcommander",
         "//third_party:com_google_inject_guice",
     ],

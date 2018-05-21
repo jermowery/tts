@@ -1,6 +1,6 @@
 # The following dependencies were calculated from:
 #
-# generate_workspace --output_dir /usr/local/google/home/jermowery/tts/third_party --repositories=https://repo1.maven.org/maven2/ --artifact=com.google.guava:guava:25.0-jre --artifact=com.beust:jcommander:1.72 --artifact=com.google.inject:guice:4.2.0 --artifact=com.google.cloud:google-cloud-core:1.30.0 --artifact=com.google.truth:truth:0.40 --artifact=com.google.cloud:google-cloud-texttospeech:0.48.0-beta
+# generate_workspace --output_dir /home/jermowery/tts/third_party --repositories=https://repo1.maven.org/maven2/ --artifact=com.google.guava:guava:25.0-jre --artifact=com.beust:jcommander:1.72 --artifact=com.google.inject:guice:4.2.0 --artifact=com.google.cloud:google-cloud-core:1.30.0 --artifact=com.google.truth:truth:0.40 --artifact=com.google.cloud:google-cloud-texttospeech:0.48.0-beta --artifact=org.mockito:mockito-all:2.0.2-beta
 
 
 def generated_maven_jars():
@@ -295,6 +295,13 @@ def generated_maven_jars():
       name = "com_google_api_grpc_proto_google_iam_v1",
       artifact = "com.google.api.grpc:proto-google-iam-v1:0.12.0",
       sha1 = "ea312c0250a5d0a7cdd1b20bc2c3259938b79855",
+  )
+
+
+  native.maven_jar(
+      name = "org_mockito_mockito_all",
+      artifact = "org.mockito:mockito-all:2.0.2-beta",
+      sha1 = "3e24f450275812fb354d29a58b66b8f26e13002f",
   )
 
 
@@ -772,6 +779,13 @@ def generated_java_libraries():
           ":com_google_api_grpc_proto_google_common_protos",
           ":com_google_protobuf_protobuf_java",
       ],
+  )
+
+
+  native.java_library(
+      name = "org_mockito_mockito_all",
+      visibility = ["//visibility:public"],
+      exports = ["@org_mockito_mockito_all//jar"],
   )
 
 

@@ -8,11 +8,10 @@
     <option name="projectViewFile" value="$PROJECT_DIR$/.bazelproject" />
     <option name="workspaceRoot" value="$PROJECT_DIR$/.." />
   </component>
-  <component name="BlazeSyncStatusState">
-    <option name="dirty" value="true" />
-  </component>
   <component name="ChangeListManager">
-    <list default="true" id="1824c9f1-977b-4fd5-b281-1f521bd0cf1b" name="Default" comment="" />
+    <list default="true" id="1824c9f1-977b-4fd5-b281-1f521bd0cf1b" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -94,8 +93,8 @@
       <file leaf-file-name="ArgsModuleTest.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/../javatests/com/jermowery/audio/args/ArgsModuleTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="581">
-              <caret line="44" column="54" selection-start-line="44" selection-start-column="54" selection-end-line="44" selection-end-column="54" />
+            <state relative-caret-position="396">
+              <caret line="32" column="26" lean-forward="true" selection-start-line="32" selection-start-column="26" selection-end-line="32" selection-end-column="26" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -147,6 +146,14 @@
       <find>com_google_guava_guava</find>
     </findStrings>
   </component>
+  <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="Jeremy Mowery &lt;jermowery@google.com&gt;" />
+      </list>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
@@ -167,6 +174,7 @@
     <option name="width" value="1400" />
     <option name="height" value="1000" />
   </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <hideEmptyPackages PackagesPane="false" />
@@ -475,6 +483,14 @@
       <option name="presentableId" value="Default" />
       <updated>1527048489203</updated>
     </task>
+    <task id="LOCAL-00001" summary="Add tests for ArgsModule">
+      <created>1527051960629</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1527051960629</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -484,6 +500,27 @@
     <history-entry file="Bazel_test_args_args - 2018.05.22 at 21h 46m 10s.xml">
       <configuration name="Bazel test args:args" configurationId="BlazeCommandRunConfigurationType" />
     </history-entry>
+    <history-entry file="Bazel_test_args_args - 2018.05.22 at 22h 00m 54s.xml">
+      <configuration name="Bazel test args:args" configurationId="BlazeCommandRunConfigurationType" />
+    </history-entry>
+    <history-entry file="Bazel_test_ArgsModuleTest - 2018.05.22 at 22h 01m 01s.xml">
+      <configuration name="Bazel test ArgsModuleTest" configurationId="BlazeCommandRunConfigurationType" />
+    </history-entry>
+    <history-entry file="Bazel_test_ArgsModuleTest - 2018.05.22 at 22h 01m 13s.xml">
+      <configuration name="Bazel test ArgsModuleTest" configurationId="BlazeCommandRunConfigurationType" />
+    </history-entry>
+    <history-entry file="Bazel_test_ArgsModuleTest - 2018.05.22 at 22h 01m 45s.xml">
+      <configuration name="Bazel test ArgsModuleTest" configurationId="BlazeCommandRunConfigurationType" />
+    </history-entry>
+    <history-entry file="Bazel_test_ArgsModuleTest_(1) - 2018.05.22 at 22h 01m 53s.xml">
+      <configuration name="Bazel test ArgsModuleTest (1)" configurationId="BlazeCommandRunConfigurationType" />
+    </history-entry>
+    <history-entry file="Bazel_test_ArgsModuleTest - 2018.05.22 at 22h 02m 07s.xml">
+      <configuration name="Bazel test ArgsModuleTest" configurationId="BlazeCommandRunConfigurationType" />
+    </history-entry>
+    <history-entry file="Bazel_test_ArgsModuleTest_getVoice - 2018.05.22 at 22h 02m 12s.xml">
+      <configuration name="Bazel test ArgsModuleTest.getVoice" configurationId="BlazeCommandRunConfigurationType" />
+    </history-entry>
   </component>
   <component name="ToolWindowManager">
     <frame x="-1" y="0" width="2562" height="1415" extended-state="6" />
@@ -492,12 +529,12 @@
       <window_info anchor="bottom" id="TODO" order="11" />
       <window_info anchor="right" id="Palette&#9;" order="0" />
       <window_info anchor="bottom" id="Event Log" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Version Control" order="4" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Run" order="7" sideWeight="0.49960938" visible="true" weight="0.32972136" />
+      <window_info anchor="bottom" id="Version Control" order="4" />
+      <window_info active="true" anchor="bottom" id="Run" order="7" sideWeight="0.49960938" visible="true" weight="0.32972136" />
       <window_info anchor="bottom" id="Blaze Console" order="1" sideWeight="0.50039065" side_tool="true" visible="true" weight="0.32972136" />
       <window_info anchor="bottom" id="Terminal" order="3" />
       <window_info id="Designer" order="1" />
-      <window_info active="true" content_ui="combo" id="Project" order="2" visible="true" weight="0.13632813" />
+      <window_info content_ui="combo" id="Project" order="2" visible="true" weight="0.13632813" />
       <window_info id="Structure" order="3" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Blaze Problems" order="0" sideWeight="0.49765626" weight="0.32972136" />
       <window_info id="Favorites" order="0" side_tool="true" />
@@ -513,6 +550,12 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Add tests for ArgsModule" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add tests for ArgsModule" />
+    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -696,8 +739,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/../javatests/com/jermowery/audio/args/ArgsModuleTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="581">
-          <caret line="44" column="54" selection-start-line="44" selection-start-column="54" selection-end-line="44" selection-end-column="54" />
+        <state relative-caret-position="396">
+          <caret line="32" column="26" lean-forward="true" selection-start-line="32" selection-start-column="26" selection-end-line="32" selection-end-column="26" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -721,7 +764,7 @@
       </state>
       <state key="FacetStructureConfigurable.UI">
         <settings>
-          <last-edited />
+          <last-edited>No facets are configured</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>

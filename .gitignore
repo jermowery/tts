@@ -1,6 +1,9 @@
 
 # Created by https://www.gitignore.io/api/java,bazel,linux,macos,windows,intellij
 
+.project/
+.idea/
+
 ### Bazel ###
 /bazel-*
 

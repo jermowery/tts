@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="jcommander-1.72-ijar_6fbfdcf8">
-    <CLASSES>
-      <root url="jar://$USER_HOME$/.cache/bazel/_bazel_jermowery/0ac2afbc294c5f4d37bd42653265d4fe/execroot/__main__/bazel-out/k8-fastbuild/genfiles/external/com_beust_jcommander/jar/_ijar/jar/external/com_beust_jcommander/jar/jcommander-1.72-ijar.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

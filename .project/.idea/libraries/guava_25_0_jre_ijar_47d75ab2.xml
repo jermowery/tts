@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="guava-25.0-jre-ijar_47d75ab2">
-    <CLASSES>
-      <root url="jar://$USER_HOME$/.cache/bazel/_bazel_jermowery/0ac2afbc294c5f4d37bd42653265d4fe/execroot/__main__/bazel-out/k8-fastbuild/genfiles/external/com_google_guava_guava/jar/_ijar/jar/external/com_google_guava_guava/jar/guava-25.0-jre-ijar.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

@@ -1,0 +1,19 @@
+<mat-toolbar color="primary">
+  Audio
+</mat-toolbar>
+<form (ngSubmit)="convertToAudio()" [formGroup]="formGroup">
+  <mat-card *ngFor="let card of getCardsControl().controls" [formGroup]="card">
+    <mat-form-field>
+      <textarea matInput formControlName="ssml"></textarea>
+    </mat-form-field>
+    <br>
+    <mat-form-field>
+      <mat-select formControlName="voice">
+        <mat-option value="en-US-Wavenet-A">
+          en-US-Wavenet-A
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </mat-card>
+  <button mat-raised-button type="submit">Create audio</button>
+</form>

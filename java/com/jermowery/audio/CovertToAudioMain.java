@@ -7,7 +7,8 @@ import com.jermowery.audio.args.ArgsModule;
 import java.util.Arrays;
 
 public class CovertToAudioMain {
-  public static void main(String[] args) {
+
+  public static void main(String[] args) throws Exception {
     System.out.println(Arrays.toString(args));
     Args parsedArgs = new Args();
     JCommander.newBuilder()

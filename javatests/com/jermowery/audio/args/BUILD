@@ -3,10 +3,10 @@ java_library(
     srcs = glob(["*.java"]),
     deps = [
         "//java/com/jermowery/audio/args",
-        "//third_party:com_google_guava_guava",
-        "//third_party:com_google_truth_truth",
-        "//third_party:junit_junit",
-        "//third_party:org_mockito_mockito_all",
+        "@maven//:com_google_guava_guava",
+        "@maven//:com_google_truth_truth",
+        "@maven//:junit_junit",
+        "@maven//:org_mockito_mockito_all",
     ],
 )
 

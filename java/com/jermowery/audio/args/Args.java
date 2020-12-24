@@ -13,11 +13,11 @@ public class Args {
   @Parameter
   private List<String> parameters = new ArrayList<>();
 
-  @Parameter(names = "--file", description = "The file to convert", converter = ToFile.class)
+  @Parameter(names = "--file", description = "The file to convert", converter = ToFile.class, required = true)
   private File file;
 
   @Parameter(names = "--voice", description = "The voice model to use")
-  private String voice = "en-GB-Standard-A";
+  private String voice = "en-US-Wavenet-E";
 
   public File getFile() {
     return file;
@@ -26,7 +26,6 @@ public class Args {
   public String getVoice() {
     return voice;
   }
-
 
 
   private class ToFile implements IStringConverter<File> {

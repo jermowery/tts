@@ -1,10 +1,10 @@
-package com.jermowery.audio.args;
+package com.jermowery.audio.cli.args;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
-import com.jermowery.audio.args.Annotations.InputFile;
-import com.jermowery.audio.args.Annotations.Voice;
+import com.jermowery.audio.cli.args.Annotations.InputFile;
+import com.jermowery.audio.cli.args.Annotations.Voice;
 import java.io.File;
 
 public class ArgsModule extends AbstractModule {

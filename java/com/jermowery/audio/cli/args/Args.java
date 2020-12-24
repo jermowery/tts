@@ -1,4 +1,4 @@
-package com.jermowery.audio.args;
+package com.jermowery.audio.cli.args;
 
 import com.beust.jcommander.IStringConverter;
 import com.beust.jcommander.Parameter;

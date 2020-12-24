@@ -1,4 +1,4 @@
-package com.jermowery.audio;
+package com.jermowery.audio.lib;
 
 import com.google.common.base.Predicates;
 import com.google.common.base.Strings;

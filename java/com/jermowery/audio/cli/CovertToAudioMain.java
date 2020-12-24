@@ -1,9 +1,9 @@
-package com.jermowery.audio;
+package com.jermowery.audio.cli;
 
 import com.beust.jcommander.JCommander;
 import com.google.inject.Guice;
-import com.jermowery.audio.args.Args;
-import com.jermowery.audio.args.ArgsModule;
+import com.jermowery.audio.cli.args.Args;
+import com.jermowery.audio.cli.args.ArgsModule;
 import java.util.Arrays;
 
 public class CovertToAudioMain {
@@ -16,6 +16,5 @@ public class CovertToAudioMain {
         .build()
         .parse(args);
     Guice.createInjector(new ArgsModule(parsedArgs)).getInstance(ConvertToAudio.class).run();
-
   }
 }

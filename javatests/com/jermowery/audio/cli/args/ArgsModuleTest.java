@@ -1,4 +1,4 @@
-package com.jermowery.audio.args;
+package com.jermowery.audio.cli.args;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.when;

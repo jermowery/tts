@@ -1,4 +1,4 @@
-package com.jermowery.audio;
+package com.jermowery.audio.lib;
 
 import com.google.common.collect.ImmutableList;
 import java.io.IOException;

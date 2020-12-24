@@ -1,4 +1,4 @@
-package com.jermowery.audio;
+package com.jermowery.audio.lib;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
@@ -35,7 +35,7 @@ public class FromTextSsmlProviderTest {
 
   @Test
   public void getBlocks_smallFile() throws Exception {
-    File file = new File("javatests/com/jermowery/audio/test1.txt");
+    File file = new File("javatests/com/jermowery/audio/lib/test1.txt");
 
     ImmutableList<String> actual = fromTextSsmlProvider.getBlocks(file.toURI().toURL());
 
@@ -44,7 +44,7 @@ public class FromTextSsmlProviderTest {
 
   @Test
   public void getBlocks_largeFile() throws Exception {
-    File file = new File("javatests/com/jermowery/audio/test2.txt");
+    File file = new File("javatests/com/jermowery/audio/lib/test2.txt");
 
     ImmutableList<String> actual = fromTextSsmlProvider.getBlocks(file.toURI().toURL());
 

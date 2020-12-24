@@ -1,0 +1,10 @@
+java_library(
+    name = "server",
+    srcs = glob(["*.java"]),
+    deps = [],
+)
+
+java_binary(
+    name = "ApiServer",
+    runtime_deps = [":server"],
+)

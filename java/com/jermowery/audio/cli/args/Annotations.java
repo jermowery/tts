@@ -1,4 +1,4 @@
-package com.jermowery.audio.args;
+package com.jermowery.audio.cli.args;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -2,9 +2,9 @@
   Audio
 </mat-toolbar>
 <form (ngSubmit)="convertToAudio()" [formGroup]="formGroup">
-  <mat-card *ngFor="let card of getCardsControl().controls" [formGroup]="card">
+  <mat-card *ngFor="let part of getPartsControl().controls" [formGroup]="part">
     <mat-form-field>
-      <textarea matInput formControlName="ssml"></textarea>
+      <textarea matInput formControlName="text"></textarea>
     </mat-form-field>
     <br>
     <mat-form-field>

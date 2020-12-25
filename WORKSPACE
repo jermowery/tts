@@ -26,6 +26,9 @@ maven_install(
         "com.google.api:api-common:1.10.1",
         "com.google.api.grpc:proto-google-cloud-texttospeech-v1:1.2.7",
         "org.mockito:mockito-core:3.6.28",
+        "com.google.auto.value:auto-value:1.7.4",
+        "com.google.auto.value:auto-value-annotations:1.7.4",
+        "com.google.code.gson:gson:2.8.6",
     ],
     repositories = [
         "https://jcenter.bintray.com/",

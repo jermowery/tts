@@ -70,7 +70,7 @@ export class AppComponent implements OnInit {
   convertToAudio() {
     this.loading = true;
     this.formGroup.disable();
-    this.http.post("http://172.17.244.52:8001/api", this.formGroup.value, {
+    this.http.post("http://172.17.243.79:8001/api", this.formGroup.value, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
       }),

@@ -41,6 +41,7 @@ public class ApiServlet implements HttpHandler {
   private final SsmlProvider ssmlProvider = new FromTextSsmlProvider();
   private final ExecutorService executor = Executors.newFixedThreadPool(100);
   private final RateLimiter requestsPerSecondLimiter = RateLimiter.create(4.0);
+  private final RateLimiter charactersPerSecondLimiter = RateLimiter.create(2500);
 
   @Override
   public void handle(HttpExchange httpExchange) throws IOException {
@@ -156,9 +157,12 @@ public class ApiServlet implements HttpHandler {
     SynthesizeSpeechRequest request = SynthesizeSpeechRequest.newBuilder()
         .setAudioConfig(audioConfig).setVoice(voice).setInput(input).build();
     logger.info("Acquiring request permit");
-    double requestSleepTime = requestsPerSecondLimiter.acquire();
+    double requestSleepTime = requestsPerSecondLimiter.acquire(1);
     logger.info("Request sleep time: " + requestSleepTime);
-    logger.info("Making request after sleeping for " + sleepTime);
+    logger.info("Acquiring characters permits: " + text.length());
+    double charactersSleepTime = charactersPerSecondLimiter.acquire(text.length());
+    logger.info("Characters sleep time: " + charactersSleepTime);
+    logger.info(String.format("Making request:\n%s", request));
     return client.synthesizeSpeechCallable()
         .futureCall(request);
   }

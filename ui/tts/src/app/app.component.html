@@ -34,10 +34,34 @@
         </mat-form-field>
       </mat-card-content>
       <mat-card-actions align="end">
-        <button mat-button color="primary" type="button" (click)="deleteCardAt(i)"><mat-icon inline>delete</mat-icon>&ngsp;Delete</button>
-        <button mat-flat-button color="primary" type="button" (click)="addCardAt(i+1)"><mat-icon inline>add</mat-icon>&ngsp;Add after</button>
+        <button
+            mat-button
+            color="primary"
+            type="button"
+            (click)="deleteCardAt(i)"
+            [disabled]="loading">
+          <mat-icon inline>delete</mat-icon>&ngsp;Delete
+        </button>
+        <button
+            mat-stroked-button
+            color="primary"
+            type="button"
+            (click)="addCardAt(i+1)"
+            [disabled]="loading">
+          <mat-icon inline>add</mat-icon>&ngsp;Add after
+        </button>
       </mat-card-actions>
     </mat-card>
-    <button mat-raised-button type="submit" color="primary" class="submit-button">Create audio</button>
+    <div class="submit-container">
+      <mat-spinner *ngIf="loading" class="spinner" diameter="36"></mat-spinner>
+      <button
+          mat-raised-button
+          type="submit"
+          color="primary"
+          class="submit-button"
+          [disabled]="loading">
+        Create audio
+      </button>
+    </div>
   </form>
 </div>

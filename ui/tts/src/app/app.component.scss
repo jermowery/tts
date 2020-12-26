@@ -16,9 +16,15 @@
         width: 100%;
     }
 
-    .submit-button {
+    .submit-container {
         float: right;
         margin-bottom: 24px;
+    }
+
+    .spinner {
+        display: inline-block;
+        vertical-align: bottom;
+        margin-right: 16px;
     }
 }
 

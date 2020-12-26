@@ -12,6 +12,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatButtonModule} from '@angular/material/button';
 import { HttpClientModule } from '@angular/common/http';
 import {MatIconModule} from '@angular/material/icon';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import {MatIconModule} from '@angular/material/icon';
     MatIconModule,
     MatInputModule,
     MatSelectModule,
+    MatProgressSpinnerModule,
     MatToolbarModule,
     ReactiveFormsModule,
   ],

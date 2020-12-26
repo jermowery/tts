@@ -28,6 +28,7 @@ export class AppComponent implements OnInit {
     "en-US-Wavenet-I",
     "en-US-Wavenet-J",
   ];
+  loading = false;
 
   @ViewChildren(MatCard, { read: ElementRef }) cards!: QueryList<ElementRef<HTMLElement>>;
   @ViewChild("uploadFileInput", { read: ElementRef }) uploadFileInput!: ElementRef<HTMLInputElement>;
@@ -67,6 +68,8 @@ export class AppComponent implements OnInit {
   }
 
   convertToAudio() {
+    this.loading = true;
+    this.formGroup.disable();
     this.http.post("http://172.17.244.52:8001/api", this.formGroup.value, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -74,6 +77,8 @@ export class AppComponent implements OnInit {
       responseType: 'blob',
     }).subscribe(
       response => {
+        this.loading = false;
+        this.formGroup.enable();
         let url = window.URL.createObjectURL(response);
         let a = document.createElement('a');
         document.body.appendChild(a);
@@ -84,7 +89,11 @@ export class AppComponent implements OnInit {
         window.URL.revokeObjectURL(url);
         a.remove();
       },
-      e => console.error(e));
+      e => {
+        console.log(e);
+        this.loading = false;
+        this.formGroup.enable();
+      });
   }
 
   download() {

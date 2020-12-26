@@ -2,6 +2,7 @@ package com.jermowery.audio.server;
 
 import com.sun.net.httpserver.HttpServer;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -13,11 +14,11 @@ public class ApiServer {
       Logger.getLogger(ApiServer.class.getName());
 
   public static void main(String[] args) throws IOException {
-    HttpServer server = HttpServer.create(new InetSocketAddress("localhost", 8001), 0);
+    HttpServer server = HttpServer.create(new InetSocketAddress("172.17.244.52", 8001), 0);
     ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(100);
     server.createContext("/api", new ApiServlet());
     server.setExecutor(threadPoolExecutor);
     server.start();
-    logger.info("Server started at http://localhost:8001");
+    logger.info(String.format("ApiServer started at http:/%s", server.getAddress()));
   }
 }

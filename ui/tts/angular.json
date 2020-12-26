@@ -127,5 +127,8 @@
       }
     }
   },
-  "defaultProject": "tts"
+  "defaultProject": "tts",
+  "cli": {
+    "analytics": "52377a94-f62f-4e0a-8f49-0484f4af6710"
+  }
 }

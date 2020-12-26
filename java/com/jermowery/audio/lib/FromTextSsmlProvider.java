@@ -15,12 +15,17 @@ import java.net.URL;
 public class FromTextSsmlProvider implements SsmlProvider {
 
   @Override
-  public ImmutableList<String> getBlocks(URL url) throws IOException {
-    ImmutableList<String> result = CharStreams.readLines(new InputStreamReader(url.openStream())).stream()
+  public ImmutableList<String> getBlocks(Readable readable) throws IOException {
+    ImmutableList<String> result = CharStreams.readLines(readable).stream()
         .filter(Predicates.not(Strings::isNullOrEmpty))
         .map(block -> String.format("<speak>%s</speak>", block))
         .collect(ImmutableList.toImmutableList());
     System.out.println("got blocks: " + result);
     return result;
+  }
+
+  @Override
+  public ImmutableList<String> getBlocks(URL url) throws IOException {
+    return getBlocks(new InputStreamReader(url.openStream()));
   }
 }

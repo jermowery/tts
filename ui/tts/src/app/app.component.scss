@@ -34,4 +34,10 @@
     cursor: pointer;
     height: 40px;
     width: 40px;
+    text-align: center;
+
+    .upload-icon {
+        line-height: 31px;
+        vertical-align: middle;
+    }
 }

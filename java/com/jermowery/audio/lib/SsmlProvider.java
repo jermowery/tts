@@ -18,4 +18,9 @@ public interface SsmlProvider {
    * Returns a list of blocks of SSML that will be no longer than {@link #MAX_BLOCK_SIZE_CHARS}.
    */
   ImmutableList<String> getBlocks(URL url) throws IOException;
+
+  /**
+   * Returns a list of blocks of SSML that will be no longer than {@link #MAX_BLOCK_SIZE_CHARS}.
+   */
+  ImmutableList<String> getBlocks(Readable url) throws IOException;
 }

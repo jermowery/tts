@@ -3,7 +3,7 @@
     <span>Audio</span>
     <span class="spacer"></span>
     <button type="button" mat-icon-button (click)="download()"><mat-icon>download</mat-icon></button>
-    <label for="upload" class="upload-label"><mat-icon>upload</mat-icon></label>
+    <label for="upload" class="upload-label"><mat-icon class="upload-icon">upload</mat-icon></label>
     <input type="file" id="upload" #uploadFileInput (change)="loadPartsFromFile()" accept="application/json">
   </mat-toolbar-row>
 </mat-toolbar>
@@ -35,7 +35,7 @@
       </mat-card-content>
       <mat-card-actions align="end">
         <button mat-button color="primary" type="button" (click)="deleteCardAt(i)"><mat-icon inline>delete</mat-icon>&ngsp;Delete</button>
-        <button mat-flat-button color="primary" type="button" (click)="addCardAt(i)"><mat-icon inline>add</mat-icon>&ngsp;Add after</button>
+        <button mat-flat-button color="primary" type="button" (click)="addCardAt(i+1)"><mat-icon inline>add</mat-icon>&ngsp;Add after</button>
       </mat-card-actions>
     </mat-card>
     <button mat-raised-button type="submit" color="primary" class="submit-button">Create audio</button>

@@ -17,9 +17,16 @@ java_library(
     resources = ["test.mp3"],
     deps = [
         ":autovalue-processor",
+        "//java/com/jermowery/audio/lib",
+        "@maven//:com_google_api_api_common",
+        "@maven//:com_google_api_gax",
+        "@maven//:com_google_api_grpc_proto_google_cloud_texttospeech_v1",
         "@maven//:com_google_auto_value_auto_value_annotations",
+        "@maven//:com_google_cloud_google_cloud_texttospeech",
         "@maven//:com_google_code_gson_gson",
         "@maven//:com_google_guava_guava",
+        "@maven//:com_google_protobuf_protobuf_java",
+        "@maven//:org_threeten_threetenbp",
     ],
 )
 

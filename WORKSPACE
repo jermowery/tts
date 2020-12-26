@@ -29,6 +29,8 @@ maven_install(
         "com.google.auto.value:auto-value:1.7.4",
         "com.google.auto.value:auto-value-annotations:1.7.4",
         "com.google.code.gson:gson:2.8.6",
+        "com.google.api:gax:1.60.1",
+        "org.threeten:threetenbp:1.5.0",
     ],
     repositories = [
         "https://jcenter.bintray.com/",

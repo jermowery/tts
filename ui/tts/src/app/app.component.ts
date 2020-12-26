@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, ElementRef, HostListener, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostListener, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MatCard } from '@angular/material/card';
 
@@ -10,7 +10,7 @@ import { MatCard } from '@angular/material/card';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnInit {
-  readonly formGroup = new FormGroup({ 'parts': new FormArray([]) });
+  formGroup = new FormGroup({ 'parts': new FormArray([]) });
   readonly voices: ReadonlyArray<string> = [
     "en-GB-Wavenet-A",
     "en-GB-Wavenet-B",
@@ -32,7 +32,8 @@ export class AppComponent implements OnInit {
   @ViewChildren(MatCard, { read: ElementRef }) cards!: QueryList<ElementRef<HTMLElement>>;
   @ViewChild("uploadFileInput", { read: ElementRef }) uploadFileInput!: ElementRef<HTMLInputElement>;
 
-  constructor(private readonly http: HttpClient) { }
+  constructor(private readonly http: HttpClient,
+    private readonly changeDetectorRef: ChangeDetectorRef,) { }
 
   @HostListener('window:beforeunload', ['$event'])
   maybeConfirmUnload(e: BeforeUnloadEvent) {
@@ -78,7 +79,7 @@ export class AppComponent implements OnInit {
         document.body.appendChild(a);
         a.setAttribute('style', 'display: none');
         a.href = url;
-        a.download = "converted.mp3";
+        a.download = `converted-${new Date().toISOString()}.mp3`;
         a.click();
         window.URL.revokeObjectURL(url);
         a.remove();
@@ -102,8 +103,27 @@ export class AppComponent implements OnInit {
 
     const fr = new FileReader();
     fr.addEventListener("load", () => {
-      this.formGroup.setValue(JSON.parse(fr.result as string));
+      const formData: FormData = JSON.parse(fr.result as string);
+      const parts = new FormArray([]);
+      for (const part of formData.parts) {
+        parts.push(new FormGroup({
+          'text': new FormControl(part.text),
+          'voice': new FormControl(part.voice),
+        }))
+      }
+      const newFormGroup = new FormGroup({'parts': parts});
+      this.formGroup = newFormGroup;
+      this.changeDetectorRef.markForCheck();
     });
     fr.readAsText(files.item(0)!);
   }
+}
+
+interface FormData {
+  parts: Part[];
+}
+
+interface Part {
+  text: string;
+  voice: string;
 }

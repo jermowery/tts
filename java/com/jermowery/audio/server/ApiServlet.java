@@ -30,6 +30,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import com.google.common.util.concurrent.RateLimiter;
 
 public class ApiServlet implements HttpHandler {
 
@@ -38,7 +39,8 @@ public class ApiServlet implements HttpHandler {
   private static final Gson GSON = new GsonBuilder().create();
 
   private final SsmlProvider ssmlProvider = new FromTextSsmlProvider();
-  ExecutorService executor = Executors.newFixedThreadPool(100);
+  private final ExecutorService executor = Executors.newFixedThreadPool(100);
+  private final RateLimiter requestsPerSecondLimiter = RateLimiter.create(4.0);
 
   @Override
   public void handle(HttpExchange httpExchange) throws IOException {
@@ -153,7 +155,10 @@ public class ApiServlet implements HttpHandler {
         .build();
     SynthesizeSpeechRequest request = SynthesizeSpeechRequest.newBuilder()
         .setAudioConfig(audioConfig).setVoice(voice).setInput(input).build();
-    System.out.println("Making request");
+    logger.info("Acquiring request permit");
+    double requestSleepTime = requestsPerSecondLimiter.acquire();
+    logger.info("Request sleep time: " + requestSleepTime);
+    logger.info("Making request after sleeping for " + sleepTime);
     return client.synthesizeSpeechCallable()
         .futureCall(request);
   }

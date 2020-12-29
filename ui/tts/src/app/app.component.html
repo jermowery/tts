@@ -58,9 +58,11 @@
           </mat-select>
         </mat-form-field>
         &ngsp;
-        <a href="https://cloud.google.com/text-to-speech/docs/voices" target="_blank" rel="noopener">List of voices</a>
+        <a href="https://cloud.google.com/text-to-speech/docs/voices" target="_blank" rel="noopener" mat-stroked-button
+          color="accent">List of voices</a>
         <br>
-        <mat-tab-group dynamicHeight (selectedTabChange)="setTypeFormControlValue(i, $event)" [selectedIndex]="getTypeTabIndex(i)">
+        <mat-tab-group dynamicHeight (selectedTabChange)="setTypeFormControlValue(i, $event)"
+          [selectedIndex]="getTypeTabIndex(i)">
           <mat-tab label="Text">
             <ng-template matTabContent>
               <mat-form-field class="textarea">
@@ -78,7 +80,8 @@
         </mat-tab-group>
       </mat-card-content>
       <mat-card-actions align="end">
-        <button mat-button color="accent" type="button" (click)="deleteCardAt(i)" [disabled]="loading || getPartsControl().length === 1">
+        <button mat-button color="accent" type="button" (click)="deleteCardAt(i)"
+          [disabled]="loading || getPartsControl().length === 1">
           <mat-icon inline>delete</mat-icon>&ngsp;Delete
         </button>
         <button mat-stroked-button color="accent" type="button" (click)="addCardAt(i)" [disabled]="loading">

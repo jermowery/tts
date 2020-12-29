@@ -2,13 +2,50 @@
   <mat-toolbar-row>
     <span>Audio</span>
     <span class="spacer"></span>
-    <button type="button" mat-icon-button (click)="download()"><mat-icon>download</mat-icon></button>
-    <label for="upload" class="upload-label"><mat-icon class="upload-icon">upload</mat-icon></label>
+    <button type="button" mat-icon-button (click)="download()">
+      <mat-icon>download</mat-icon>
+    </button>
+    <label for="upload" class="upload-label">
+      <mat-icon class="upload-icon">upload</mat-icon>
+    </label>
     <input type="file" id="upload" #uploadFileInput (change)="loadPartsFromFile()" accept="application/json">
   </mat-toolbar-row>
 </mat-toolbar>
 <div class="page-content">
   <form (ngSubmit)="convertToAudio()" [formGroup]="formGroup" class="form">
+    <mat-card>
+      <mat-card-title>
+        Customize voices
+      </mat-card-title>
+      <mat-card-content>
+        <div *ngFor="let voiceCustomization of getVoiceCustomizationsControl().controls; let i = index"
+          [formGroup]="voiceCustomization">
+          <mat-form-field class="voiceId-select">
+            <mat-label>
+              Original voice
+            </mat-label>
+            <mat-select formControlName="voiceId">
+              <mat-option *ngFor="let voice of voices" [value]="voice">
+                {{ voice }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>New name</mat-label>
+            <input matInput formControlName="customization">
+          </mat-form-field>
+          <button mat-icon-button (click)="removeVoiceCustomization(i)" class="delete-voice-button">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </mat-card-content>
+      <mat-card-actions align="end">
+        <button type="button" color="primary" mat-stroked-button (click)="addAVoice()">
+          <mat-icon inline>add</mat-icon>
+          Add a voice
+        </button>
+      </mat-card-actions>
+    </mat-card>
     <mat-card *ngFor="let part of getPartsControl().controls; let i = index" [formGroup]="part">
       <mat-card-title>Part {{ i + 1 }}</mat-card-title>
       <mat-card-content>
@@ -16,7 +53,7 @@
           <mat-label>Voice</mat-label>
           <mat-select formControlName="voice">
             <mat-option *ngFor="let voice of voices" [value]="voice">
-              {{ voice }}
+              {{ getVoiceDisplayName(voice) }}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -25,40 +62,25 @@
         <br>
         <mat-form-field class="textarea">
           <mat-label>Text to convert</mat-label>
-          <textarea
-              matInput
-              formControlName="text"
-              matTextareaAutosize>
+          <textarea matInput formControlName="text" matTextareaAutosize>
           </textarea>
         </mat-form-field>
       </mat-card-content>
       <mat-card-actions align="end">
-        <button
-            mat-button
-            color="primary"
-            type="button"
-            (click)="deleteCardAt(i)"
-            [disabled]="loading">
+        <button mat-button color="primary" type="button" (click)="deleteCardAt(i)" [disabled]="loading">
           <mat-icon inline>delete</mat-icon>&ngsp;Delete
         </button>
-        <button
-            mat-stroked-button
-            color="primary"
-            type="button"
-            (click)="addCardAt(i+1)"
-            [disabled]="loading">
+        <button mat-stroked-button color="primary" type="button" (click)="addCardAt(i)" [disabled]="loading">
+          <mat-icon inline>add</mat-icon>&ngsp;Add before
+        </button>
+        <button mat-stroked-button color="primary" type="button" (click)="addCardAt(i+1)" [disabled]="loading">
           <mat-icon inline>add</mat-icon>&ngsp;Add after
         </button>
       </mat-card-actions>
     </mat-card>
     <div class="submit-container">
       <mat-spinner *ngIf="loading" class="spinner" diameter="36"></mat-spinner>
-      <button
-          mat-raised-button
-          type="submit"
-          color="primary"
-          class="submit-button"
-          [disabled]="loading">
+      <button mat-raised-button type="submit" color="primary" class="submit-button" [disabled]="loading">
         Create audio
       </button>
     </div>

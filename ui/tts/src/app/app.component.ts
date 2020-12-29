@@ -10,7 +10,11 @@ import { MatCard } from '@angular/material/card';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnInit {
-  formGroup = new FormGroup({ 'parts': new FormArray([]) });
+  formGroup = new FormGroup({
+    'parts': new FormArray([]),
+    'voiceCustomizations': new FormArray([]),
+  });
+
   readonly voices: ReadonlyArray<string> = [
     "en-GB-Wavenet-A",
     "en-GB-Wavenet-B",
@@ -55,7 +59,7 @@ export class AppComponent implements OnInit {
         'voice': new FormControl('en-US-Wavenet-A'),
       }));
     setTimeout(() => {
-      this.cards.last.nativeElement.scrollIntoView({ behavior: "smooth", block: "center" });
+      this.cards.toArray()[index].nativeElement.scrollIntoView({ behavior: "smooth", block: "center" });
     });
   }
 
@@ -65,6 +69,10 @@ export class AppComponent implements OnInit {
 
   getPartsControl(): FormArray {
     return this.formGroup.get('parts') as FormArray;
+  }
+
+  getVoiceCustomizationsControl(): FormArray {
+    return this.formGroup.get('voiceCustomizations') as FormArray;
   }
 
   convertToAudio() {
@@ -120,19 +128,55 @@ export class AppComponent implements OnInit {
           'voice': new FormControl(part.voice),
         }))
       }
-      const newFormGroup = new FormGroup({'parts': parts});
+      const voiceCustomizations = new FormArray([]);
+      for (const voiceCustomization of formData.voiceCustomizations) {
+        voiceCustomizations.push(new FormGroup({
+          'voiceId': new FormControl(voiceCustomization.voiceId),
+          'customization': new FormControl(voiceCustomization.customization),
+        }))
+      }
+      const newFormGroup = new FormGroup({
+        'parts': parts,
+        'voiceCustomizations': voiceCustomizations,
+      });
       this.formGroup = newFormGroup;
       this.changeDetectorRef.markForCheck();
     });
     fr.readAsText(files.item(0)!);
   }
+
+  addAVoice() {
+    this.getVoiceCustomizationsControl().push(new FormGroup({
+      'voiceId': new FormControl('en-US-Wavenet-A'),
+      'customization': new FormControl(),
+    }));
+  }
+
+  getVoiceDisplayName(voiceId: string) {
+    const maybeCustomizedVoiceId = this.getVoiceCustomizationsControl().controls.find(
+      control => control.get("voiceId")?.value === voiceId);
+    if (maybeCustomizedVoiceId && maybeCustomizedVoiceId.get("customization")?.value) {
+      return maybeCustomizedVoiceId.get("customization")?.value;
+    }
+    return voiceId;
+  }
+
+  removeVoiceCustomization(index: number) {
+    this.getVoiceCustomizationsControl().removeAt(index);
+  }
 }
 
 interface FormData {
   parts: Part[];
+  voiceCustomizations: VoiceCustomization[];
 }
 
 interface Part {
   text: string;
   voice: string;
+}
+
+interface VoiceCustomization {
+  voiceId: string;
+  customization: string;
 }

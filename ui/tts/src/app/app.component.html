@@ -40,7 +40,7 @@
         </div>
       </mat-card-content>
       <mat-card-actions align="end">
-        <button type="button" color="primary" mat-stroked-button (click)="addAVoice()">
+        <button type="button" color="accent" mat-stroked-button (click)="addAVoice()">
           <mat-icon inline>add</mat-icon>
           Add a voice
         </button>
@@ -78,13 +78,13 @@
         </mat-tab-group>
       </mat-card-content>
       <mat-card-actions align="end">
-        <button mat-button color="primary" type="button" (click)="deleteCardAt(i)" [disabled]="loading || getPartsControl().length === 1">
+        <button mat-button color="accent" type="button" (click)="deleteCardAt(i)" [disabled]="loading || getPartsControl().length === 1">
           <mat-icon inline>delete</mat-icon>&ngsp;Delete
         </button>
-        <button mat-stroked-button color="primary" type="button" (click)="addCardAt(i)" [disabled]="loading">
+        <button mat-stroked-button color="accent" type="button" (click)="addCardAt(i)" [disabled]="loading">
           <mat-icon inline>add</mat-icon>&ngsp;Add before
         </button>
-        <button mat-stroked-button color="primary" type="button" (click)="addCardAt(i+1)" [disabled]="loading">
+        <button mat-stroked-button color="accent" type="button" (click)="addCardAt(i+1)" [disabled]="loading">
           <mat-icon inline>add</mat-icon>&ngsp;Add after
         </button>
       </mat-card-actions>

@@ -40,6 +40,7 @@ export class AppComponent implements OnInit {
     formatOnPaste: true,
     wordWrap: "on",
     minimap: { enabled: false },
+    theme: 'vs-dark',
   };
 
   loading = false;

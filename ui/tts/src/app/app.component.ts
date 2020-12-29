@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Host
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MatCard } from '@angular/material/card';
+import { fromEvent } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -119,7 +120,7 @@ export class AppComponent implements OnInit {
     }
 
     const fr = new FileReader();
-    fr.addEventListener("load", () => {
+    fromEvent(fr, "load").subscribe(() => {
       const formData: FormData = JSON.parse(fr.result as string);
       const parts = new FormArray([]);
       for (const part of formData.parts) {

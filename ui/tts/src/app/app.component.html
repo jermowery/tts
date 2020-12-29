@@ -78,7 +78,7 @@
         </mat-tab-group>
       </mat-card-content>
       <mat-card-actions align="end">
-        <button mat-button color="primary" type="button" (click)="deleteCardAt(i)" [disabled]="loading">
+        <button mat-button color="primary" type="button" (click)="deleteCardAt(i)" [disabled]="loading || getPartsControl().length === 1">
           <mat-icon inline>delete</mat-icon>&ngsp;Delete
         </button>
         <button mat-stroked-button color="primary" type="button" (click)="addCardAt(i)" [disabled]="loading">

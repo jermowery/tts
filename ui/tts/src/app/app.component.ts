@@ -160,7 +160,7 @@ export class AppComponent implements OnInit {
         }))
       }
       const voiceCustomizations = new FormArray([]);
-      for (const voiceCustomization of formData.voiceCustomizations) {
+      for (const voiceCustomization of formData.voiceCustomizations || []) {
         voiceCustomizations.push(new FormGroup({
           'voiceId': new FormControl(voiceCustomization.voiceId),
           'customization': new FormControl(voiceCustomization.customization),

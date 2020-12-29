@@ -3,6 +3,7 @@ import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MatCard } from '@angular/material/card';
 import { fromEvent } from 'rxjs';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-root',
@@ -33,6 +34,14 @@ export class AppComponent implements OnInit {
     "en-US-Wavenet-I",
     "en-US-Wavenet-J",
   ];
+  readonly editorOptions = {
+    language: 'xml',
+    formatOnType: true,
+    formatOnPaste: true,
+    wordWrap: "on",
+    minimap: { enabled: false },
+  };
+
   loading = false;
 
   @ViewChildren(MatCard, { read: ElementRef }) cards!: QueryList<ElementRef<HTMLElement>>;
@@ -58,10 +67,30 @@ export class AppComponent implements OnInit {
       {
         'text': new FormControl(),
         'voice': new FormControl('en-US-Wavenet-A'),
+        'type': new FormControl('text'),
       }));
     setTimeout(() => {
       this.cards.toArray()[index].nativeElement.scrollIntoView({ behavior: "smooth", block: "center" });
     });
+  }
+
+  private getTypeControlAt(index: number) {
+    return this.getPartsControl().at(index).get('type')!;
+  }
+
+  getTypeTabIndex(index: number) {
+    const typeLabel: 'text' | 'ssml' = this.getTypeControlAt(index)?.value;
+    switch (typeLabel) {
+      case 'text':
+        return 0;
+      case 'ssml':
+        return 1;
+    }
+  }
+
+  setTypeFormControlValue(index: number, changeEvent: MatTabChangeEvent) {
+    const formControl = this.getTypeControlAt(index);
+    formControl.setValue(changeEvent.tab.textLabel.toLowerCase());
   }
 
   deleteCardAt(index: number) {
@@ -127,6 +156,7 @@ export class AppComponent implements OnInit {
         parts.push(new FormGroup({
           'text': new FormControl(part.text),
           'voice': new FormControl(part.voice),
+          'type': new FormControl(part.type ?? 'text'),
         }))
       }
       const voiceCustomizations = new FormArray([]);
@@ -175,6 +205,7 @@ interface FormData {
 interface Part {
   text: string;
   voice: string;
+  type?: 'text' | 'ssml';
 }
 
 interface VoiceCustomization {

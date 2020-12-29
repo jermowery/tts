@@ -60,11 +60,22 @@
         &ngsp;
         <a href="https://cloud.google.com/text-to-speech/docs/voices" target="_blank" rel="noopener">List of voices</a>
         <br>
-        <mat-form-field class="textarea">
-          <mat-label>Text to convert</mat-label>
-          <textarea matInput formControlName="text" matTextareaAutosize>
-          </textarea>
-        </mat-form-field>
+        <mat-tab-group dynamicHeight (selectedTabChange)="setTypeFormControlValue(i, $event)" [selectedIndex]="getTypeTabIndex(i)">
+          <mat-tab label="Text">
+            <ng-template matTabContent>
+              <mat-form-field class="textarea">
+                <mat-label>Text to convert</mat-label>
+                <textarea matInput formControlName="text" matTextareaAutosize>
+                </textarea>
+              </mat-form-field>
+            </ng-template>
+          </mat-tab>
+          <mat-tab label="SSML">
+            <ng-template matTabContent>
+              <ngx-monaco-editor [options]="editorOptions" formControlName="text"></ngx-monaco-editor>
+            </ng-template>
+          </mat-tab>
+        </mat-tab-group>
       </mat-card-content>
       <mat-card-actions align="end">
         <button mat-button color="primary" type="button" (click)="deleteCardAt(i)" [disabled]="loading">

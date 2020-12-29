@@ -14,7 +14,7 @@ public class ApiServer {
       Logger.getLogger(ApiServer.class.getName());
 
   public static void main(String[] args) throws IOException {
-    HttpServer server = HttpServer.create(new InetSocketAddress("172.17.243.79", 8001), 0);
+    HttpServer server = HttpServer.create(new InetSocketAddress("172.17.44.167", 8001), 0);
     ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(100);
     server.createContext("/api", new ApiServlet());
     server.setExecutor(threadPoolExecutor);

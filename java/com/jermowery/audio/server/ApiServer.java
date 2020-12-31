@@ -2,10 +2,12 @@ package com.jermowery.audio.server;
 
 import com.sun.net.httpserver.HttpServer;
 import java.io.IOException;
+import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ApiServer {
@@ -14,7 +16,15 @@ public class ApiServer {
       Logger.getLogger(ApiServer.class.getName());
 
   public static void main(String[] args) throws IOException {
-    HttpServer server = HttpServer.create(new InetSocketAddress("172.17.44.167", 8001), 0);
+    InetAddress ip;
+    try (final DatagramSocket socket = new DatagramSocket()) {
+      socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
+      ip = socket.getLocalAddress();
+    } catch (Exception e) {
+      logger.log(Level.SEVERE, "Could not get IP address quitting.", e);
+      return;
+    }
+    HttpServer server = HttpServer.create(new InetSocketAddress(ip, 8001), 0);
     ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(100);
     server.createContext("/api", new ApiServlet());
     server.setExecutor(threadPoolExecutor);

@@ -1,0 +1,4 @@
+filegroup(
+    name = "static-files",
+    srcs = glob(["dist/tts/*"]),
+)

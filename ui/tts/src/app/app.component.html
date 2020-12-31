@@ -25,9 +25,16 @@
               Original voice
             </mat-label>
             <mat-select formControlName="voiceId">
-              <mat-option *ngFor="let voice of voices" [value]="voice">
-                {{ voice }}
-              </mat-option>
+              <mat-optgroup label="female">
+                <mat-option *ngFor="let voice of femaleVoices" [value]="voice">
+                  {{ voice }}
+                </mat-option>
+              </mat-optgroup>
+              <mat-optgroup label="male">
+                <mat-option *ngFor="let voice of maleVoices" [value]="voice">
+                  {{ voice }}
+                </mat-option>
+              </mat-optgroup>
             </mat-select>
           </mat-form-field>
           <mat-form-field>
@@ -52,9 +59,16 @@
         <mat-form-field>
           <mat-label>Voice</mat-label>
           <mat-select formControlName="voice">
-            <mat-option *ngFor="let voice of voices" [value]="voice">
-              {{ getVoiceDisplayName(voice) }}
-            </mat-option>
+            <mat-optgroup label="female">
+              <mat-option *ngFor="let voice of femaleVoices" [value]="voice">
+                {{ getVoiceDisplayName(voice) }}
+              </mat-option>
+            </mat-optgroup>
+            <mat-optgroup label="male">
+              <mat-option *ngFor="let voice of maleVoices" [value]="voice">
+                {{ getVoiceDisplayName(voice) }}
+              </mat-option>
+            </mat-optgroup>
           </mat-select>
         </mat-form-field>
         &ngsp;

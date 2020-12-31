@@ -17,20 +17,23 @@ export class AppComponent implements OnInit {
     'voiceCustomizations': new FormArray([]),
   });
 
-  readonly voices: ReadonlyArray<string> = [
+  readonly femaleVoices: readonly string[] = [
     "en-GB-Wavenet-A",
-    "en-GB-Wavenet-B",
     "en-GB-Wavenet-C",
-    "en-GB-Wavenet-D",
     "en-GB-Wavenet-F",
-    "en-US-Wavenet-A",
-    "en-US-Wavenet-B",
     "en-US-Wavenet-C",
-    "en-US-Wavenet-D",
     "en-US-Wavenet-E",
     "en-US-Wavenet-F",
     "en-US-Wavenet-G",
     "en-US-Wavenet-H",
+  ];
+
+  readonly maleVoices: readonly string[] = [
+    "en-GB-Wavenet-B",
+    "en-GB-Wavenet-D",
+    "en-US-Wavenet-A",
+    "en-US-Wavenet-B",
+    "en-US-Wavenet-D",
     "en-US-Wavenet-I",
     "en-US-Wavenet-J",
   ];

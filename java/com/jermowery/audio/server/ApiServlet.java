@@ -11,9 +11,11 @@ import com.google.cloud.texttospeech.v1.VoiceSelectionParams;
 import com.google.common.collect.ImmutableList;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.JdkFutureAdapters;
+import com.google.common.util.concurrent.RateLimiter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.protobuf.ByteString;
+import com.jermowery.audio.lib.FromSsmlSsmlProvider;
 import com.jermowery.audio.lib.FromTextSsmlProvider;
 import com.jermowery.audio.lib.SsmlProvider;
 import com.jermowery.audio.server.ConvertRequest.Part;
@@ -30,7 +32,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import com.google.common.util.concurrent.RateLimiter;
 
 public class ApiServlet implements HttpHandler {
 
@@ -38,7 +39,8 @@ public class ApiServlet implements HttpHandler {
       Logger.getLogger(ApiServlet.class.getName());
   private static final Gson GSON = new GsonBuilder().create();
 
-  private final SsmlProvider ssmlProvider = new FromTextSsmlProvider();
+  private final SsmlProvider fromTextSsmlProvider = new FromTextSsmlProvider();
+  private final SsmlProvider fromSsmlSsmlProvider = new FromSsmlSsmlProvider();
   private final ExecutorService executor = Executors.newFixedThreadPool(100);
   private final RateLimiter requestsPerSecondLimiter = RateLimiter.create(4.0);
   private final RateLimiter charactersPerSecondLimiter = RateLimiter.create(2500);
@@ -91,6 +93,19 @@ public class ApiServlet implements HttpHandler {
       ImmutableList.Builder<ByteString> combinedAudioForEachPart = ImmutableList.builder();
 
       for (Part part : request.getParts()) {
+        SsmlProvider ssmlProvider;
+        switch (part.getType()) {
+          case "text":
+            ssmlProvider = fromTextSsmlProvider;
+            break;
+          case "ssml":
+            ssmlProvider = fromSsmlSsmlProvider;
+            break;
+          default:
+            logger.severe("Unknown part type: " + part.getType());
+            ssmlProvider = fromTextSsmlProvider;
+            break;
+        }
         ImmutableList<ByteString> audioContents = Futures.allAsList(
             ssmlProvider.getBlocks(new StringReader(part.getText())).stream()
                 .map(text -> getFuture(textToSpeechClient, text, part.getVoice()))
@@ -153,6 +168,7 @@ public class ApiServlet implements HttpHandler {
     // Select the type of audio file you want returned
     AudioConfig audioConfig = AudioConfig.newBuilder()
         .setAudioEncoding(AudioEncoding.MP3) // MP3 audio.
+        .addEffectsProfileId("large-home-entertainment-class-device")
         .build();
     SynthesizeSpeechRequest request = SynthesizeSpeechRequest.newBuilder()
         .setAudioConfig(audioConfig).setVoice(voice).setInput(input).build();

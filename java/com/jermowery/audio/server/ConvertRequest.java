@@ -16,6 +16,7 @@ public class ConvertRequest {
 
     private String text = "";
     private String voice = "";
+    private String type = "text";
 
     public String getText() {
       return text;
@@ -25,11 +26,16 @@ public class ConvertRequest {
       return voice;
     }
 
+    public String getType() {
+      return type;
+    }
+
     @Override
     public String toString() {
       return "Part{" +
           "text='" + text + '\'' +
           ", voice='" + voice + '\'' +
+          ", type='" + type + '\'' +
           '}';
     }
   }

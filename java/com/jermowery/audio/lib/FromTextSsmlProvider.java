@@ -20,7 +20,6 @@ public class FromTextSsmlProvider implements SsmlProvider {
         .filter(Predicates.not(Strings::isNullOrEmpty))
         .map(block -> String.format("<speak>%s</speak>", block))
         .collect(ImmutableList.toImmutableList());
-    System.out.println("got blocks: " + result);
     return result;
   }
 

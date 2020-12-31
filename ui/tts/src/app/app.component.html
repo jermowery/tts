@@ -14,6 +14,10 @@
         </label>
         <input type="file" id="upload" #uploadFileInput (change)="loadPartsFromFile()" accept="application/json">
       </div>
+      <button type="button" mat-button>
+        <mat-icon inline>upload</mat-icon>
+        Parse from text
+      </button>
     </div>
   </mat-sidenav>
   <mat-sidenav-content>

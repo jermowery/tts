@@ -66,7 +66,7 @@
 }
 
 .sidenav-container {
-    height: 100%;
+    height: calc(100% - 64px)
 }
 
 mat-sidenav {
@@ -76,4 +76,8 @@ mat-sidenav {
 .sidenav-buttons {
     display: flex;
     flex-direction: column;
+}
+
+.sidenav-icon {
+    margin-right: 8px;
 }

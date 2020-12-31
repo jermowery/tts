@@ -1,8 +1,16 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <button mat-icon-button class="menu-button" (click)="sidenav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span>Audio</span>
+  </mat-toolbar-row>
+</mat-toolbar>
 <mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #sidenav>
+  <mat-sidenav #sidenav mode="side">
     <div class="sidenav-buttons">
       <button type="button" mat-button (click)="download()">
-        <mat-icon inline>save</mat-icon>
+        <mat-icon inline class="sidenav-icon">save</mat-icon>
         Save
       </button>
       <input
@@ -13,24 +21,16 @@
         (change)="loadPartsFromFile()"
         accept="application/json">
       <button type="button" mat-button (click)="uploadFileInput.click()">
-        <mat-icon class="upload-icon" inline>folder_open</mat-icon>
+        <mat-icon class="upload-icon sidenav-icon" inline>folder_open</mat-icon>
         Load
       </button>
       <button type="button" mat-button>
-        <mat-icon inline>upload</mat-icon>
+        <mat-icon inline class="sidenav-icon">upload</mat-icon>
         Parse from text
       </button>
     </div>
   </mat-sidenav>
   <mat-sidenav-content>
-    <mat-toolbar color="primary">
-      <mat-toolbar-row>
-        <button mat-icon-button class="menu-button" (click)="sidenav.toggle()">
-          <mat-icon>menu</mat-icon>
-        </button>
-        <span>Audio</span>
-      </mat-toolbar-row>
-    </mat-toolbar>
     <div class="page-content">
       <form (ngSubmit)="convertToAudio()" [formGroup]="formGroup" class="form">
         <mat-card>

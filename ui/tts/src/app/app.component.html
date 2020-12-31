@@ -5,15 +5,17 @@
         <mat-icon inline>save</mat-icon>
         Save
       </button>
-      <div>
-        <label for="upload" class="upload-label">
-          <span>
-            <mat-icon class="upload-icon" inline>folder_open</mat-icon>
-            Load
-          </span>
-        </label>
-        <input type="file" id="upload" #uploadFileInput (change)="loadPartsFromFile()" accept="application/json">
-      </div>
+      <input
+        type="file"
+        hidden="true"
+        id="upload"
+        #uploadFileInput
+        (change)="loadPartsFromFile()"
+        accept="application/json">
+      <button type="button" mat-button (click)="uploadFileInput.click()">
+        <mat-icon class="upload-icon" inline>folder_open</mat-icon>
+        Load
+      </button>
       <button type="button" mat-button>
         <mat-icon inline>upload</mat-icon>
         Parse from text

@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MatCard } from '@angular/material/card';
 import { fromEvent } from 'rxjs';
 import { MatTabChangeEvent } from '@angular/material/tabs';
+import { MatSidenav } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-root',
@@ -50,6 +51,7 @@ export class AppComponent implements OnInit {
 
   @ViewChildren(MatCard, { read: ElementRef }) cards!: QueryList<ElementRef<HTMLElement>>;
   @ViewChild("uploadFileInput", { read: ElementRef }) uploadFileInput!: ElementRef<HTMLInputElement>;
+  @ViewChild("sidenav") sidenav!: MatSidenav;
 
   constructor(private readonly http: HttpClient,
     private readonly changeDetectorRef: ChangeDetectorRef,) { }
@@ -144,6 +146,7 @@ export class AppComponent implements OnInit {
     a.href = URL.createObjectURL(file);
     a.download = `saved-parts-${new Date().toISOString()}.json`;
     a.click();
+    this.sidenav.close();
   }
 
   loadPartsFromFile() {
@@ -175,6 +178,7 @@ export class AppComponent implements OnInit {
         'voiceCustomizations': voiceCustomizations,
       });
       this.formGroup = newFormGroup;
+      this.sidenav.close();
       this.changeDetectorRef.markForCheck();
     });
     fr.readAsText(files.item(0)!);

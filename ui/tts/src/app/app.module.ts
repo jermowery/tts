@@ -15,6 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
+import {MatSidenavModule} from '@angular/material/sidenav';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { MonacoEditorModule } from 'ngx-monaco-editor';
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
+    MatSidenavModule,
     MatSelectModule,
     MatTabsModule,
     MatProgressSpinnerModule,

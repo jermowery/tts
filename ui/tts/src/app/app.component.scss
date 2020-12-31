@@ -39,8 +39,9 @@
 .upload-label {
     cursor: pointer;
     height: 40px;
-    width: 40px;
+    width: 100%;
     text-align: center;
+    display: block;
 
     .upload-icon {
         line-height: 31px;
@@ -58,4 +59,21 @@
 
 ::ng-deep .mat-tab-body {
     margin-top: 8px;
+}
+
+.menu-button {
+    margin-right: 8px;
+}
+
+.sidenav-container {
+    height: 100%;
+}
+
+mat-sidenav {
+    width: 200px;
+}
+
+.sidenav-buttons {
+    display: flex;
+    flex-direction: column;
 }

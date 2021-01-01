@@ -175,6 +175,8 @@ export class AppComponent implements OnInit {
         'voiceCustomizations': new FormArray([]),
       });
       this.formGroup = newFormGroup;
+      this.formGroup.markAsDirty();
+      this.formGroup.markAllAsTouched();
       this.sidenav.close();
       this.parseFileInput.nativeElement.value = '';
       this.changeDetectorRef.markForCheck();
@@ -211,6 +213,8 @@ export class AppComponent implements OnInit {
         'voiceCustomizations': voiceCustomizations,
       });
       this.formGroup = newFormGroup;
+      this.formGroup.markAsDirty();
+      this.formGroup.markAllAsTouched();
       this.sidenav.close();
       this.uploadFileInput.nativeElement.value = '';
       this.changeDetectorRef.markForCheck();

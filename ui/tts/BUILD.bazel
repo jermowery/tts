@@ -1,4 +1,5 @@
 filegroup(
     name = "static-files",
-    srcs = glob(["dist/tts/*"]),
+    srcs = glob(["dist/tts/**"]),
+    visibility = ["//visibility:public"],
 )

@@ -14,7 +14,7 @@ java_library(
 java_library(
     name = "server",
     srcs = glob(["*.java"]),
-    resources = ["test.mp3"],
+    resources = ["//ui/tts:static-files"],
     deps = [
         ":autovalue-processor",
         "//java/com/jermowery/audio/lib",

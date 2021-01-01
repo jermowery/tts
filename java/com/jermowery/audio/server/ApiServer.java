@@ -27,6 +27,8 @@ public class ApiServer {
     HttpServer server = HttpServer.create(new InetSocketAddress(ip, 8001), 0);
     ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(100);
     server.createContext("/api", new ApiServlet());
+    server.createContext("/", new UiServlet());
+    server.createContext("/*", new UiServlet());
     server.setExecutor(threadPoolExecutor);
     server.start();
     logger.info(String.format("ApiServer started at http:/%s", server.getAddress()));

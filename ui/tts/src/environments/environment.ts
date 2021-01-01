@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiPath: 'http://192.168.86.36:8001/api',
+  apiPath: 'http://172.17.176.82:8001/api',
 };
 
 /*

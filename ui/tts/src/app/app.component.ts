@@ -52,6 +52,7 @@ export class AppComponent implements OnInit {
 
   @ViewChildren(MatCard, { read: ElementRef }) cards!: QueryList<ElementRef<HTMLElement>>;
   @ViewChild("uploadFileInput", { read: ElementRef }) uploadFileInput!: ElementRef<HTMLInputElement>;
+  @ViewChild("parseFileInput", { read: ElementRef }) parseFileInput!: ElementRef<HTMLInputElement>;
   @ViewChild("sidenav") sidenav!: MatSidenav;
 
   constructor(private readonly http: HttpClient,
@@ -150,6 +151,37 @@ export class AppComponent implements OnInit {
     this.sidenav.close();
   }
 
+  parseFromFile() {
+    const files = this.parseFileInput.nativeElement.files;
+    if (!files || files.length <= 0) {
+      return;
+    }
+
+    const fr = new FileReader();
+    fromEvent(fr, "load").subscribe(() => {
+      const text = fr.result as string;
+      const lines = text.split("\n").map(line => line.trim()).filter(line => line !== "");
+      const parts = new FormArray([]);
+
+      for (const line of lines) {
+        parts.push(new FormGroup({
+          'text': new FormControl(line),
+          'voice': new FormControl('en-US-Wavenet-A'),
+          'type': new FormControl('text'),
+        }))
+      }
+      const newFormGroup = new FormGroup({
+        'parts': parts,
+        'voiceCustomizations': new FormArray([]),
+      });
+      this.formGroup = newFormGroup;
+      this.sidenav.close();
+      this.parseFileInput.nativeElement.value = '';
+      this.changeDetectorRef.markForCheck();
+    });
+    fr.readAsText(files.item(0)!);
+  }
+
   loadPartsFromFile() {
     const files = this.uploadFileInput.nativeElement.files;
     if (!files || files.length <= 0) {
@@ -180,6 +212,7 @@ export class AppComponent implements OnInit {
       });
       this.formGroup = newFormGroup;
       this.sidenav.close();
+      this.uploadFileInput.nativeElement.value = '';
       this.changeDetectorRef.markForCheck();
     });
     fr.readAsText(files.item(0)!);

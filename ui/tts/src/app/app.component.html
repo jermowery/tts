@@ -16,7 +16,6 @@
       <input
         type="file"
         hidden="true"
-        id="upload"
         #uploadFileInput
         (change)="loadPartsFromFile()"
         accept="application/json">
@@ -24,7 +23,13 @@
         <mat-icon class="upload-icon sidenav-icon" inline>folder_open</mat-icon>
         Load
       </button>
-      <button type="button" mat-button>
+      <input
+        type="file"
+        hidden="true"
+        #parseFileInput
+        (change)="parseFromFile()"
+        accept="text/plain">
+      <button type="button" mat-button (click)="parseFileInput.click()">
         <mat-icon inline class="sidenav-icon">upload</mat-icon>
         Parse from text
       </button>

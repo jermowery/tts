@@ -87,31 +87,38 @@ public class ApiServlet implements HttpHandler {
     }
     logger.info(String.format("Request:\n%s", request));
 
+    httpExchange.getResponseHeaders().set("Content-Type", "audio/mpeg");
+    httpExchange.getResponseHeaders()
+        .set("Content-Disposition", "attachment; filename=\"combined.mp3\"");
+    httpExchange.getResponseHeaders().set("Transfer-Encoding", "chunked");
+    httpExchange.sendResponseHeaders(200, 0);
+
+    OutputStream responseOutputStream = new ChunkedOutputStream(httpExchange.getResponseBody());
     ByteString combined;
 
     try (TextToSpeechClient textToSpeechClient = TextToSpeechClient.create()) {
-      combined = Futures.allAsList(request.getParts().stream().flatMap(part -> {
-        SsmlProvider ssmlProvider;
-        switch (part.getType()) {
-          case "text":
-            ssmlProvider = fromTextSsmlProvider;
-            break;
-          case "ssml":
-            ssmlProvider = fromSsmlSsmlProvider;
-            break;
-          default:
-            logger.severe("Unknown part type: " + part.getType());
-            ssmlProvider = fromTextSsmlProvider;
-            break;
-        }
-        try {
-        return ssmlProvider.getBlocks(new StringReader(part.getText())).stream()
-                .map(text -> getFuture(textToSpeechClient, text, part.getVoice()))
-                .map(future -> JdkFutureAdapters.listenInPoolThread(future, executor));
-        } catch (Exception inner) {
-          throw new RuntimeException("failed to get audio", inner);
-        }
-      }).collect(ImmutableList.toImmutableList())).get().stream().map(SynthesizeSpeechResponse::getAudioContent).reduce(ByteString.EMPTY, (a, b) -> a.concat(b));
+      // combined = Futures.allAsList(request.getParts().stream().flatMap(part -> {
+      //   SsmlProvider ssmlProvider;
+      //   switch (part.getType()) {
+      //     case "text":
+      //       ssmlProvider = fromTextSsmlProvider;
+      //       break;
+      //     case "ssml":
+      //       ssmlProvider = fromSsmlSsmlProvider;
+      //       break;
+      //     default:
+      //       logger.severe("Unknown part type: " + part.getType());
+      //       ssmlProvider = fromTextSsmlProvider;
+      //       break;
+      //   }
+      //   try {
+      //   return ssmlProvider.getBlocks(new StringReader(part.getText())).stream()
+      //           .map(text -> getFuture(textToSpeechClient, text, part.getVoice()))
+      //           .map(future -> JdkFutureAdapters.listenInPoolThread(future, executor));
+      //   } catch (Exception inner) {
+      //     throw new RuntimeException("failed to get audio", inner);
+      //   }
+      // }).collect(ImmutableList.toImmutableList())).get().stream().map(SynthesizeSpeechResponse::getAudioContent).reduce(ByteString.EMPTY, (a, b) -> a.concat(b));
     } catch (Exception e) {
       logger.log(Level.SEVERE, "Failed to convert to audio", e);
       StringWriter sw = new StringWriter();
@@ -127,14 +134,14 @@ public class ApiServlet implements HttpHandler {
       return;
     }
 
-    httpExchange.getResponseHeaders().set("Content-Type", "audio/mpeg");
-    httpExchange.getResponseHeaders()
-        .set("Content-Disposition", "attachment; filename=\"combined.mp3\"");
-    httpExchange.sendResponseHeaders(200, combined.toByteArray().length);
-    OutputStream outputStream = httpExchange.getResponseBody();
-    outputStream.write(combined.toByteArray());
-    outputStream.flush();
-    outputStream.close();
+    // httpExchange.getResponseHeaders().set("Content-Type", "audio/mpeg");
+    // httpExchange.getResponseHeaders()
+    //     .set("Content-Disposition", "attachment; filename=\"combined.mp3\"");
+    // httpExchange.sendResponseHeaders(200, combined.toByteArray().length);
+    // OutputStream outputStream = httpExchange.getResponseBody();
+    // outputStream.write(combined.toByteArray());
+    // outputStream.flush();
+    // outputStream.close();
   }
 
 

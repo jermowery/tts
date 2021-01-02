@@ -10,21 +10,18 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="google-cloud-texttospeech-1.2.7_630ec821" level="project" />
+    <orderEntry type="library" name="gson-2.8.6_bb76b9cc" level="project" />
+    <orderEntry type="library" name="guava-30.1-jre_41efccbc" level="project" />
     <orderEntry type="library" name="error_prone_annotations-2.4.0_71a51774" level="project" />
+    <orderEntry type="library" name="api-common-1.10.1_6fa04251" level="project" />
     <orderEntry type="library" name="guice-4.2.3_3366aa37" level="project" />
     <orderEntry type="library" name="truth-1.1_607d9702" level="project" />
     <orderEntry type="library" name="junit-4.13.1_1d047fbf" level="project" />
+    <orderEntry type="library" name="proto-google-cloud-texttospeech-v1-1.2.7_9f0e4358" level="project" />
     <orderEntry type="library" name="jcommander-1.78_5f992497" level="project" />
     <orderEntry type="library" name="mockito-core-3.6.28_e7ba3018" level="project" />
-    <orderEntry type="library" name="proto-google-cloud-texttospeech-v1-1.2.7_9f0e4358" level="project" />
-    <orderEntry type="library" name="gson-2.8.6_bb76b9cc" level="project" />
     <orderEntry type="library" name="protobuf-java-3.14.0_7ae67065" level="project" />
-    <orderEntry type="library" name="threetenbp-1.5.0_a832343f" level="project" />
     <orderEntry type="library" name="gax-1.60.1_b0e498aa" level="project" />
-    <orderEntry type="library" name="guava-30.1-jre_41efccbc" level="project" />
-    <orderEntry type="library" name="api-common-1.10.1_6fa04251" level="project" />
-    <orderEntry type="library" name="auto-value-annotations-1.7.4_79323aaf" level="project" />
-    <orderEntry type="library" name="google-cloud-texttospeech-1.2.7_630ec821" level="project" />
-    <orderEntry type="library" name="auto-value-1.7.4_30e8cd98" level="project" />
   </component>
 </module>

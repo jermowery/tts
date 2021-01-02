@@ -9,16 +9,12 @@ import com.google.cloud.texttospeech.v1.SynthesizeSpeechResponse;
 import com.google.cloud.texttospeech.v1.TextToSpeechClient;
 import com.google.cloud.texttospeech.v1.VoiceSelectionParams;
 import com.google.common.collect.ImmutableList;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.JdkFutureAdapters;
 import com.google.common.util.concurrent.RateLimiter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.protobuf.ByteString;
 import com.jermowery.audio.lib.FromSsmlSsmlProvider;
 import com.jermowery.audio.lib.FromTextSsmlProvider;
 import com.jermowery.audio.lib.SsmlProvider;
-import com.jermowery.audio.server.ConvertRequest.Part;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import java.io.IOException;
@@ -30,6 +26,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -42,7 +39,7 @@ public class ApiServlet implements HttpHandler {
   private final SsmlProvider fromTextSsmlProvider = new FromTextSsmlProvider();
   private final SsmlProvider fromSsmlSsmlProvider = new FromSsmlSsmlProvider();
   private final ExecutorService executor = Executors.newFixedThreadPool(100);
-  private final RateLimiter requestsPerSecondLimiter = RateLimiter.create(4.0);
+  private final RateLimiter requestsPerSecondLimiter = RateLimiter.create(5.0);
   private final RateLimiter charactersPerSecondLimiter = RateLimiter.create(2500);
 
   @Override
@@ -94,31 +91,40 @@ public class ApiServlet implements HttpHandler {
     httpExchange.sendResponseHeaders(200, 0);
 
     OutputStream responseOutputStream = new ChunkedOutputStream(httpExchange.getResponseBody());
-    ByteString combined;
 
     try (TextToSpeechClient textToSpeechClient = TextToSpeechClient.create()) {
-      // combined = Futures.allAsList(request.getParts().stream().flatMap(part -> {
-      //   SsmlProvider ssmlProvider;
-      //   switch (part.getType()) {
-      //     case "text":
-      //       ssmlProvider = fromTextSsmlProvider;
-      //       break;
-      //     case "ssml":
-      //       ssmlProvider = fromSsmlSsmlProvider;
-      //       break;
-      //     default:
-      //       logger.severe("Unknown part type: " + part.getType());
-      //       ssmlProvider = fromTextSsmlProvider;
-      //       break;
-      //   }
-      //   try {
-      //   return ssmlProvider.getBlocks(new StringReader(part.getText())).stream()
-      //           .map(text -> getFuture(textToSpeechClient, text, part.getVoice()))
-      //           .map(future -> JdkFutureAdapters.listenInPoolThread(future, executor));
-      //   } catch (Exception inner) {
-      //     throw new RuntimeException("failed to get audio", inner);
-      //   }
-      // }).collect(ImmutableList.toImmutableList())).get().stream().map(SynthesizeSpeechResponse::getAudioContent).reduce(ByteString.EMPTY, (a, b) -> a.concat(b));
+      ImmutableList<Future<ApiFuture<SynthesizeSpeechResponse>>> chunks = request.getParts()
+          .stream()
+          .flatMap(part -> {
+            SsmlProvider ssmlProvider;
+            switch (part.getType()) {
+              case "text":
+                ssmlProvider = fromTextSsmlProvider;
+                break;
+              case "ssml":
+                ssmlProvider = fromSsmlSsmlProvider;
+                break;
+              default:
+                logger.severe("Unknown part type: " + part.getType());
+                ssmlProvider = fromTextSsmlProvider;
+                break;
+            }
+
+            try {
+              return ssmlProvider.getBlocks(new StringReader(part.getText())).stream()
+                  .map(chunk -> executor
+                      .submit(() -> getFuture(textToSpeechClient, chunk, part.getVoice())));
+            } catch (Exception e) {
+              throw new RuntimeException("Failed to get chunk", e);
+            }
+          }).collect(ImmutableList.toImmutableList());
+
+      for (Future<ApiFuture<SynthesizeSpeechResponse>> chunkFuture : chunks) {
+        byte[] chunk = chunkFuture.get().get().getAudioContent().toByteArray();
+        responseOutputStream.write(chunk);
+        responseOutputStream.flush();
+      }
+      responseOutputStream.close();
     } catch (Exception e) {
       logger.log(Level.SEVERE, "Failed to convert to audio", e);
       StringWriter sw = new StringWriter();
@@ -133,17 +139,7 @@ public class ApiServlet implements HttpHandler {
       outputStream.close();
       return;
     }
-
-    // httpExchange.getResponseHeaders().set("Content-Type", "audio/mpeg");
-    // httpExchange.getResponseHeaders()
-    //     .set("Content-Disposition", "attachment; filename=\"combined.mp3\"");
-    // httpExchange.sendResponseHeaders(200, combined.toByteArray().length);
-    // OutputStream outputStream = httpExchange.getResponseBody();
-    // outputStream.write(combined.toByteArray());
-    // outputStream.flush();
-    // outputStream.close();
   }
-
 
   private ApiFuture<SynthesizeSpeechResponse> getFuture(TextToSpeechClient client, String text,
       String requestedVoice) {

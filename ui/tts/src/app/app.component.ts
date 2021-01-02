@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostListener, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpEventType, HttpHeaders } from '@angular/common/http';
 import { MatCard } from '@angular/material/card';
 import { fromEvent } from 'rxjs';
 import { MatTabChangeEvent } from '@angular/material/tabs';
@@ -49,6 +49,7 @@ export class AppComponent implements OnInit {
   };
 
   loading = false;
+  loadingPercentage = 0;
 
   @ViewChildren(MatCard, { read: ElementRef }) cards!: QueryList<ElementRef<HTMLElement>>;
   @ViewChild("uploadFileInput", { read: ElementRef }) uploadFileInput!: ElementRef<HTMLInputElement>;
@@ -115,31 +116,53 @@ export class AppComponent implements OnInit {
 
   convertToAudio() {
     this.loading = true;
+    const expectedNumLoadEvents = this.getNumLoadEventEstimate();
+    let numLoadEvents = 0;
     this.formGroup.disable();
     this.http.post(environment.apiPath, this.formGroup.value, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
       }),
       responseType: 'blob',
+      reportProgress: true,
+      observe: "events"
     }).subscribe(
       response => {
-        this.loading = false;
-        this.formGroup.enable();
-        let url = window.URL.createObjectURL(response);
-        let a = document.createElement('a');
-        document.body.appendChild(a);
-        a.setAttribute('style', 'display: none');
-        a.href = url;
-        a.download = `converted-${new Date().toISOString()}.mp3`;
-        a.click();
-        window.URL.revokeObjectURL(url);
-        a.remove();
+        switch (response.type) {
+          case HttpEventType.DownloadProgress:
+            numLoadEvents++;
+            this.loadingPercentage = (numLoadEvents / expectedNumLoadEvents) * 100;
+            this.changeDetectorRef.markForCheck();
+            break;
+          case HttpEventType.Response:
+            this.loading = false;
+            this.loadingPercentage = 0;
+            this.formGroup.enable();
+            let url = window.URL.createObjectURL(response.body);
+            let a = document.createElement('a');
+            document.body.appendChild(a);
+            a.setAttribute('style', 'display: none');
+            a.href = url;
+            a.download = `converted-${new Date().toISOString()}.mp3`;
+            a.click();
+            window.URL.revokeObjectURL(url);
+            a.remove();
+            break;
+        }
       },
       e => {
         console.log(e);
         this.loading = false;
+        this.loadingPercentage = 0;
         this.formGroup.enable();
       });
+  }
+
+  private getNumLoadEventEstimate(): number {
+    return (this.getPartsControl().value as Part[])
+      .map(part => part.text).reduce((a, b) => a + b, '')
+      .split("/n").map(part => part.trim())
+      .filter(part => part !== '').length;
   }
 
   download() {

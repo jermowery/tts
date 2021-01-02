@@ -132,12 +132,12 @@
           </mat-card-actions>
         </mat-card>
         <div class="submit-container">
-          <mat-spinner *ngIf="loading" class="spinner" diameter="36"></mat-spinner>
           <button mat-raised-button type="submit" color="primary" class="submit-button" [disabled]="loading">
             <mat-icon inline>download</mat-icon>
             Create audio
           </button>
         </div>
+        <mat-progress-bar *ngIf="loading" [value]="loadingPercentage" color="accent" class="progress-bar"></mat-progress-bar>
       </form>
     </div>
   </mat-sidenav-content>

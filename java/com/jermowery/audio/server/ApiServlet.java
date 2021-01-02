@@ -87,12 +87,10 @@ public class ApiServlet implements HttpHandler {
     }
     logger.info(String.format("Request:\n%s", request));
 
-    ByteString responseAudioBytes = ByteString.EMPTY;
+    ByteString combined;
 
     try (TextToSpeechClient textToSpeechClient = TextToSpeechClient.create()) {
-      ImmutableList.Builder<ByteString> combinedAudioForEachPart = ImmutableList.builder();
-
-      for (Part part : request.getParts()) {
+      combined = Futures.allAsList(request.getParts().stream().flatMap(part -> {
         SsmlProvider ssmlProvider;
         switch (part.getType()) {
           case "text":
@@ -106,26 +104,14 @@ public class ApiServlet implements HttpHandler {
             ssmlProvider = fromTextSsmlProvider;
             break;
         }
-        ImmutableList<ByteString> audioContents = Futures.allAsList(
-            ssmlProvider.getBlocks(new StringReader(part.getText())).stream()
+        try {
+        return ssmlProvider.getBlocks(new StringReader(part.getText())).stream()
                 .map(text -> getFuture(textToSpeechClient, text, part.getVoice()))
-                .map(future -> JdkFutureAdapters.listenInPoolThread(future, executor))
-                .collect(ImmutableList.toImmutableList())).get().stream()
-            .map(SynthesizeSpeechResponse::getAudioContent)
-            .collect(ImmutableList.toImmutableList());
-
-        ByteString combined = ByteString.EMPTY;
-
-        for (ByteString block : audioContents) {
-          combined = combined.concat(block);
+                .map(future -> JdkFutureAdapters.listenInPoolThread(future, executor));
+        } catch (Exception inner) {
+          throw new RuntimeException("failed to get audio", inner);
         }
-
-        combinedAudioForEachPart.add(combined);
-      }
-
-      for (ByteString block : combinedAudioForEachPart.build()) {
-        responseAudioBytes = responseAudioBytes.concat(block);
-      }
+      }).collect(ImmutableList.toImmutableList())).get().stream().map(SynthesizeSpeechResponse::getAudioContent).reduce(ByteString.EMPTY, (a, b) -> a.concat(b));
     } catch (Exception e) {
       logger.log(Level.SEVERE, "Failed to convert to audio", e);
       StringWriter sw = new StringWriter();
@@ -144,9 +130,9 @@ public class ApiServlet implements HttpHandler {
     httpExchange.getResponseHeaders().set("Content-Type", "audio/mpeg");
     httpExchange.getResponseHeaders()
         .set("Content-Disposition", "attachment; filename=\"combined.mp3\"");
-    httpExchange.sendResponseHeaders(200, responseAudioBytes.toByteArray().length);
+    httpExchange.sendResponseHeaders(200, combined.toByteArray().length);
     OutputStream outputStream = httpExchange.getResponseBody();
-    outputStream.write(responseAudioBytes.toByteArray());
+    outputStream.write(combined.toByteArray());
     outputStream.flush();
     outputStream.close();
   }

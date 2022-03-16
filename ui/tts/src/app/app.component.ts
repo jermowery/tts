@@ -1,11 +1,11 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostListener, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
-import { HttpClient, HttpEventType, HttpHeaders } from '@angular/common/http';
-import { MatCard } from '@angular/material/card';
-import { fromEvent } from 'rxjs';
-import { MatTabChangeEvent } from '@angular/material/tabs';
-import { MatSidenav } from '@angular/material/sidenav';
-import { environment } from 'src/environments/environment';
+import {HttpClient, HttpEventType, HttpHeaders} from '@angular/common/http';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostListener, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
+import {FormArray, FormControl, FormGroup} from '@angular/forms';
+import {MatCard} from '@angular/material/card';
+import {MatSidenav} from '@angular/material/sidenav';
+import {MatTabChangeEvent} from '@angular/material/tabs';
+import {fromEvent} from 'rxjs';
+import {environment} from 'src/environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -20,44 +20,49 @@ export class AppComponent implements OnInit {
   });
 
   readonly femaleVoices: readonly string[] = [
-    "en-GB-Wavenet-A",
-    "en-GB-Wavenet-C",
-    "en-GB-Wavenet-F",
-    "en-US-Wavenet-C",
-    "en-US-Wavenet-E",
-    "en-US-Wavenet-F",
-    "en-US-Wavenet-G",
-    "en-US-Wavenet-H",
+    'en-GB-Wavenet-A',
+    'en-GB-Wavenet-C',
+    'en-GB-Wavenet-F',
+    'en-US-Wavenet-C',
+    'en-US-Wavenet-E',
+    'en-US-Wavenet-F',
+    'en-US-Wavenet-G',
+    'en-US-Wavenet-H',
   ];
 
   readonly maleVoices: readonly string[] = [
-    "en-GB-Wavenet-B",
-    "en-GB-Wavenet-D",
-    "en-US-Wavenet-A",
-    "en-US-Wavenet-B",
-    "en-US-Wavenet-D",
-    "en-US-Wavenet-I",
-    "en-US-Wavenet-J",
+    'en-GB-Wavenet-B',
+    'en-GB-Wavenet-D',
+    'en-US-Wavenet-A',
+    'en-US-Wavenet-B',
+    'en-US-Wavenet-D',
+    'en-US-Wavenet-I',
+    'en-US-Wavenet-J',
   ];
   readonly editorOptions = {
     language: 'xml',
     formatOnType: true,
     formatOnPaste: true,
-    wordWrap: "on",
-    minimap: { enabled: false },
+    wordWrap: 'on',
+    minimap: {enabled: false},
     theme: 'vs-dark',
   };
 
   loading = false;
   loadingPercentage = 0;
 
-  @ViewChildren(MatCard, { read: ElementRef }) cards!: QueryList<ElementRef<HTMLElement>>;
-  @ViewChild("uploadFileInput", { read: ElementRef }) uploadFileInput!: ElementRef<HTMLInputElement>;
-  @ViewChild("parseFileInput", { read: ElementRef }) parseFileInput!: ElementRef<HTMLInputElement>;
-  @ViewChild("sidenav") sidenav!: MatSidenav;
+  @ViewChildren(MatCard, {read: ElementRef})
+  cards!: QueryList<ElementRef<HTMLElement>>;
+  @ViewChild('uploadFileInput', {read: ElementRef})
+  uploadFileInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('parseFileInput', {read: ElementRef})
+  parseFileInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('sidenav') sidenav!: MatSidenav;
 
-  constructor(private readonly http: HttpClient,
-    private readonly changeDetectorRef: ChangeDetectorRef,) { }
+  constructor(
+      private readonly http: HttpClient,
+      private readonly changeDetectorRef: ChangeDetectorRef,
+  ) {}
 
   @HostListener('window:beforeunload', ['$event'])
   maybeConfirmUnload(e: BeforeUnloadEvent) {
@@ -72,14 +77,14 @@ export class AppComponent implements OnInit {
   }
 
   addCardAt(index: number) {
-    this.getPartsControl().insert(index, new FormGroup(
-      {
-        'text': new FormControl(),
-        'voice': new FormControl('en-US-Wavenet-A'),
-        'type': new FormControl('text'),
-      }));
+    this.getPartsControl().insert(index, new FormGroup({
+                                    'text': new FormControl(),
+                                    'voice': new FormControl('en-US-Wavenet-A'),
+                                    'type': new FormControl('text'),
+                                  }));
     setTimeout(() => {
-      this.cards.toArray()[index].nativeElement.scrollIntoView({ behavior: "smooth", block: "center" });
+      this.cards.toArray()[index].nativeElement.scrollIntoView(
+          {behavior: 'smooth', block: 'center'});
     });
   }
 
@@ -88,7 +93,7 @@ export class AppComponent implements OnInit {
   }
 
   getTypeTabIndex(index: number) {
-    const typeLabel: 'text' | 'ssml' = this.getTypeControlAt(index)?.value;
+    const typeLabel: 'text'|'ssml' = this.getTypeControlAt(index)?.value;
     switch (typeLabel) {
       case 'text':
         return 0;
@@ -119,55 +124,62 @@ export class AppComponent implements OnInit {
     const expectedNumLoadEvents = this.getNumLoadEventEstimate();
     let numLoadEvents = 0;
     this.formGroup.disable();
-    this.http.post(environment.apiPath, this.formGroup.value, {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      }),
-      responseType: 'blob',
-      reportProgress: true,
-      observe: "events"
-    }).subscribe(
-      response => {
-        switch (response.type) {
-          case HttpEventType.DownloadProgress:
-            numLoadEvents++;
-            this.loadingPercentage = (numLoadEvents / expectedNumLoadEvents) * 100;
-            this.changeDetectorRef.markForCheck();
-            break;
-          case HttpEventType.Response:
-            this.loading = false;
-            this.loadingPercentage = 0;
-            this.formGroup.enable();
-            let url = window.URL.createObjectURL(response.body);
-            let a = document.createElement('a');
-            document.body.appendChild(a);
-            a.setAttribute('style', 'display: none');
-            a.href = url;
-            a.download = `converted-${new Date().toISOString()}.mp3`;
-            a.click();
-            window.URL.revokeObjectURL(url);
-            a.remove();
-            break;
-        }
-      },
-      e => {
-        console.log(e);
-        this.loading = false;
-        this.loadingPercentage = 0;
-        this.formGroup.enable();
-      });
+    this.http
+        .post(environment.apiPath, this.formGroup.value, {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+          }),
+          responseType: 'blob',
+          reportProgress: true,
+          observe: 'events'
+        })
+        .subscribe(
+            response => {
+              switch (response.type) {
+                case HttpEventType.DownloadProgress:
+                  numLoadEvents++;
+                  this.loadingPercentage =
+                      (numLoadEvents / expectedNumLoadEvents) * 100;
+                  this.changeDetectorRef.markForCheck();
+                  break;
+                case HttpEventType.Response:
+                  this.loading = false;
+                  this.loadingPercentage = 0;
+                  this.formGroup.enable();
+                  let url = window.URL.createObjectURL(response.body!);
+                  let a = document.createElement('a');
+                  document.body.appendChild(a);
+                  a.setAttribute('style', 'display: none');
+                  a.href = url;
+                  a.download = `converted-${new Date().toISOString()}.mp3`;
+                  a.click();
+                  window.URL.revokeObjectURL(url);
+                  a.remove();
+                  break;
+              }
+            },
+            e => {
+              console.log(e);
+              this.loading = false;
+              this.loadingPercentage = 0;
+              this.formGroup.enable();
+            });
   }
 
   private getNumLoadEventEstimate(): number {
     return (this.getPartsControl().value as Part[])
-      .map(part => part.text).reduce((a, b) => a + b, '')
-      .split("/n").map(part => part.trim())
-      .filter(part => part !== '').length;
+        .map(part => part.text)
+        .reduce((a, b) => a + b, '')
+        .split('/n')
+        .map(part => part.trim())
+        .filter(part => part !== '')
+        .length;
   }
 
   download() {
-    var a = document.createElement("a");
-    var file = new Blob([JSON.stringify(this.formGroup.value)], { type: "application/json" });
+    var a = document.createElement('a');
+    var file = new Blob(
+        [JSON.stringify(this.formGroup.value)], {type: 'application/json'});
     a.href = URL.createObjectURL(file);
     a.download = `saved-parts-${new Date().toISOString()}.json`;
     a.click();
@@ -181,9 +193,10 @@ export class AppComponent implements OnInit {
     }
 
     const fr = new FileReader();
-    fromEvent(fr, "load").subscribe(() => {
+    fromEvent(fr, 'load').subscribe(() => {
       const text = fr.result as string;
-      const lines = text.split("\n").map(line => line.trim()).filter(line => line !== "");
+      const lines =
+          text.split('\n').map(line => line.trim()).filter(line => line !== '');
       const parts = new FormArray([]);
 
       for (const line of lines) {
@@ -214,7 +227,7 @@ export class AppComponent implements OnInit {
     }
 
     const fr = new FileReader();
-    fromEvent(fr, "load").subscribe(() => {
+    fromEvent(fr, 'load').subscribe(() => {
       const formData: FormData = JSON.parse(fr.result as string);
       const parts = new FormArray([]);
       for (const part of formData.parts) {
@@ -253,10 +266,12 @@ export class AppComponent implements OnInit {
   }
 
   getVoiceDisplayName(voiceId: string) {
-    const maybeCustomizedVoiceId = this.getVoiceCustomizationsControl().controls.find(
-      control => control.get("voiceId")?.value === voiceId);
-    if (maybeCustomizedVoiceId && maybeCustomizedVoiceId.get("customization")?.value) {
-      return maybeCustomizedVoiceId.get("customization")?.value;
+    const maybeCustomizedVoiceId =
+        this.getVoiceCustomizationsControl().controls.find(
+            control => control.get('voiceId')?.value === voiceId);
+    if (maybeCustomizedVoiceId &&
+        maybeCustomizedVoiceId.get('customization')?.value) {
+      return maybeCustomizedVoiceId.get('customization')?.value;
     }
     return voiceId;
   }
@@ -274,7 +289,7 @@ interface FormData {
 interface Part {
   text: string;
   voice: string;
-  type?: 'text' | 'ssml';
+  type?: 'text'|'ssml';
 }
 
 interface VoiceCustomization {

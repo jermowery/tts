@@ -137,7 +137,10 @@
             Create audio
           </button>
         </div>
-        <mat-progress-bar *ngIf="loading" [value]="loadingPercentage" color="accent" class="progress-bar"></mat-progress-bar>
+        <div class="progress-container" *ngIf="loading">
+          <span>{{loadingPercentage | percent}}</span>
+          <mat-progress-bar [value]="loadingPercentage * 100" color="accent" class="progress-bar"></mat-progress-bar>
+        </div>
       </form>
     </div>
   </mat-sidenav-content>

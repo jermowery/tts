@@ -133,7 +133,7 @@ export class AppComponent implements OnInit {
                 case HttpEventType.DownloadProgress:
                   numLoadEvents++;
                   this.loadingPercentage =
-                      (numLoadEvents / expectedNumLoadEvents) * 100;
+                      (numLoadEvents / expectedNumLoadEvents);
                   this.changeDetectorRef.markForCheck();
                   break;
                 case HttpEventType.Response:

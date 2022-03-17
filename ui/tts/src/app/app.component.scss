@@ -17,12 +17,16 @@
     }
 
     .submit-container {
-        float: right;
         margin-bottom: 8px;
     }
 
     .progress-bar {
-        margin-bottom: 16px;
+        margin-inline-start: 8px;
+    }
+
+    .progress-container {
+        display: flex;
+        align-items: center;
     }
 }
 

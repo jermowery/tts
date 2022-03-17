@@ -164,7 +164,7 @@ export class AppComponent implements OnInit {
     return (this.getPartsControl().value as Part[])
         .map(part => part.text)
         .reduce((a, b) => a + b, '')
-        .split('/n')
+        .split('\n')
         .map(part => part.trim())
         .filter(part => part !== '')
         .length;

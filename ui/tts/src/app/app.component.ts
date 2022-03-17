@@ -74,6 +74,8 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.addCardAt(0);
+    this.restoreFromLocalStorage();
+    this.formGroup.valueChanges.subscribe(() => this.saveToLocalStorage());
   }
 
   addCardAt(index: number) {
@@ -174,6 +176,18 @@ export class AppComponent implements OnInit {
         .map(part => part.trim())
         .filter(part => part !== '')
         .length;
+  }
+
+  saveToLocalStorage() {
+    const data = JSON.stringify(this.formGroup.value);
+    localStorage.setItem('formValue', data);
+  }
+
+  private restoreFromLocalStorage() {
+    const formValue = localStorage.getItem('formValue');
+    if (formValue) {
+      this.formGroup.patchValue(JSON.parse(formValue));
+    }
   }
 
   download() {

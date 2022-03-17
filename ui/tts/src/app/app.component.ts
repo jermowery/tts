@@ -1,5 +1,5 @@
 import {HttpClient, HttpEventType, HttpHeaders} from '@angular/common/http';
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostListener, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
 import {FormArray, FormControl, FormGroup} from '@angular/forms';
 import {MatCard} from '@angular/material/card';
 import {MatSidenav} from '@angular/material/sidenav';
@@ -63,14 +63,6 @@ export class AppComponent implements OnInit {
       private readonly http: HttpClient,
       private readonly changeDetectorRef: ChangeDetectorRef,
   ) {}
-
-  @HostListener('window:beforeunload', ['$event'])
-  maybeConfirmUnload(e: BeforeUnloadEvent) {
-    if (this.formGroup.dirty) {
-      e.preventDefault();
-      e.returnValue = '';
-    }
-  }
 
   ngOnInit() {
     this.addCardAt(0);

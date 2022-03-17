@@ -186,7 +186,7 @@ export class AppComponent implements OnInit {
   private restoreFromLocalStorage() {
     const formValue = localStorage.getItem('formValue');
     if (formValue) {
-      this.formGroup.patchValue(JSON.parse(formValue));
+      this.restoreFromJson(formValue);
     }
   }
 
@@ -220,11 +220,8 @@ export class AppComponent implements OnInit {
           'type': new FormControl('text'),
         }))
       }
-      const newFormGroup = new FormGroup({
-        'parts': parts,
-        'voiceCustomizations': new FormArray([]),
-      });
-      this.formGroup = newFormGroup;
+      this.formGroup.setControl('parts', parts);
+      this.formGroup.setControl('voiceCustomizations', new FormArray([]));
       this.formGroup.markAsDirty();
       this.formGroup.markAllAsTouched();
       this.sidenav.close();
@@ -242,34 +239,35 @@ export class AppComponent implements OnInit {
 
     const fr = new FileReader();
     fromEvent(fr, 'load').subscribe(() => {
-      const formData: FormData = JSON.parse(fr.result as string);
-      const parts = new FormArray([]);
-      for (const part of formData.parts) {
-        parts.push(new FormGroup({
-          'text': new FormControl(part.text),
-          'voice': new FormControl(part.voice),
-          'type': new FormControl(part.type ?? 'text'),
-        }))
-      }
-      const voiceCustomizations = new FormArray([]);
-      for (const voiceCustomization of formData.voiceCustomizations || []) {
-        voiceCustomizations.push(new FormGroup({
-          'voiceId': new FormControl(voiceCustomization.voiceId),
-          'customization': new FormControl(voiceCustomization.customization),
-        }))
-      }
-      const newFormGroup = new FormGroup({
-        'parts': parts,
-        'voiceCustomizations': voiceCustomizations,
-      });
-      this.formGroup = newFormGroup;
-      this.formGroup.markAsDirty();
-      this.formGroup.markAllAsTouched();
+      this.restoreFromJson(fr.result as string);
       this.sidenav.close();
       this.uploadFileInput.nativeElement.value = '';
       this.changeDetectorRef.markForCheck();
     });
     fr.readAsText(files.item(0)!);
+  }
+
+  private restoreFromJson(json: string) {
+    const formData: FormData = JSON.parse(json);
+    const parts = new FormArray([]);
+    for (const part of formData.parts) {
+      parts.push(new FormGroup({
+        'text': new FormControl(part.text),
+        'voice': new FormControl(part.voice),
+        'type': new FormControl(part.type ?? 'text'),
+      }))
+    }
+    const voiceCustomizations = new FormArray([]);
+    for (const voiceCustomization of formData.voiceCustomizations || []) {
+      voiceCustomizations.push(new FormGroup({
+        'voiceId': new FormControl(voiceCustomization.voiceId),
+        'customization': new FormControl(voiceCustomization.customization),
+      }))
+    }
+    this.formGroup.setControl('parts', parts);
+    this.formGroup.setControl('voiceCustomizations', voiceCustomizations);
+    this.formGroup.markAsDirty();
+    this.formGroup.markAllAsTouched();
   }
 
   addAVoice() {

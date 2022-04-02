@@ -13,10 +13,14 @@ To run the app do the following:
 
 1. Run the server with:
    ```
-   bazel run //java/com/jermowery/audio/server:ApiServer
+   bazel run //java/com/jermowery/audio/server2:ApiServer
    ```
 2. Set the IP address of the server in app.component.ts for this.http.post
 3. Do
    ```
    ng serve
    ```
+   
+Or
+
+run run.sh

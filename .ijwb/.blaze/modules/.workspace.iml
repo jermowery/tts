@@ -2,26 +2,39 @@
 <module external.system.id="Blaze" type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager">
     <exclude-output />
-    <content url="file://$MODULE_DIR$/../../../java">
+    <content url="file://$MODULE_DIR$/../../..">
       <sourceFolder url="file://$MODULE_DIR$/../../../java" isTestSource="false" />
-    </content>
-    <content url="file://$MODULE_DIR$/../../../javatests">
-      <sourceFolder url="file://$MODULE_DIR$/../../../javatests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../javatests" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../bazel-bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../bazel-genfiles" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../bazel-out" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../bazel-testlogs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../bazel-tts" />
+      <excludeFolder url="file://$MODULE_DIR$/../.." />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="google-cloud-texttospeech-1.2.7_630ec821" level="project" />
-    <orderEntry type="library" name="gson-2.8.6_bb76b9cc" level="project" />
-    <orderEntry type="library" name="guava-30.1-jre_41efccbc" level="project" />
     <orderEntry type="library" name="error_prone_annotations-2.4.0_71a51774" level="project" />
-    <orderEntry type="library" name="api-common-1.10.1_6fa04251" level="project" />
     <orderEntry type="library" name="guice-4.2.3_3366aa37" level="project" />
     <orderEntry type="library" name="truth-1.1_607d9702" level="project" />
     <orderEntry type="library" name="junit-4.13.1_1d047fbf" level="project" />
-    <orderEntry type="library" name="proto-google-cloud-texttospeech-v1-1.2.7_9f0e4358" level="project" />
     <orderEntry type="library" name="jcommander-1.78_5f992497" level="project" />
     <orderEntry type="library" name="mockito-core-3.6.28_e7ba3018" level="project" />
+    <orderEntry type="library" name="spring-context-5.3.18_1f60b734" level="project" />
+    <orderEntry type="library" name="spring-core-5.3.18_f36ca3f2" level="project" />
+    <orderEntry type="library" name="proto-google-cloud-texttospeech-v1-1.2.7_9f0e4358" level="project" />
+    <orderEntry type="library" name="gson-2.8.6_bb76b9cc" level="project" />
+    <orderEntry type="library" name="spring-boot-autoconfigure-2.6.5_d933b7b8" level="project" />
+    <orderEntry type="library" name="spring-boot-starter-web-2.6.5_c516d337" level="project" />
+    <orderEntry type="library" name="spring-boot-2.6.5_7f76152e" level="project" />
     <orderEntry type="library" name="protobuf-java-3.14.0_7ae67065" level="project" />
+    <orderEntry type="library" name="threetenbp-1.5.0_a832343f" level="project" />
     <orderEntry type="library" name="gax-1.60.1_b0e498aa" level="project" />
+    <orderEntry type="library" name="spring-web-5.3.18_193cd26f" level="project" />
+    <orderEntry type="library" name="guava-30.1-jre_41efccbc" level="project" />
+    <orderEntry type="library" name="api-common-1.10.1_6fa04251" level="project" />
+    <orderEntry type="library" name="spring-webmvc-5.3.18_75e167eb" level="project" />
+    <orderEntry type="library" name="auto-value-annotations-1.7.4_79323aaf" level="project" />
+    <orderEntry type="library" name="google-cloud-texttospeech-1.2.7_630ec821" level="project" />
   </component>
 </module>

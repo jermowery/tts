@@ -31,6 +31,11 @@ maven_install(
         "com.google.code.gson:gson:2.8.6",
         "com.google.api:gax:1.60.1",
         "org.threeten:threetenbp:1.5.0",
+        'org.springframework.boot:spring-boot-autoconfigure:2.6.5',
+        'org.springframework.boot:spring-boot-starter-web:2.6.5',
+        'org.springframework.boot:spring-boot:2.6.5',
+        'org.springframework:spring-web:5.3.17',
+        'org.springframework:spring-webmvc:5.3.18',
     ],
     repositories = [
         "https://jcenter.bintray.com/",

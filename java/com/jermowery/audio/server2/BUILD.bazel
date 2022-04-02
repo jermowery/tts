@@ -1,0 +1,27 @@
+java_library(
+    name = "server",
+    srcs = glob(["*.java"]),
+    resources = ["//:static-files"],
+    deps = [
+        "//java/com/jermowery/audio/lib",
+        "@maven//:com_google_api_api_common",
+        "@maven//:com_google_api_gax",
+        "@maven//:com_google_api_grpc_proto_google_cloud_texttospeech_v1",
+        "@maven//:com_google_auto_value_auto_value_annotations",
+        "@maven//:com_google_cloud_google_cloud_texttospeech",
+        "@maven//:com_google_code_gson_gson",
+        "@maven//:com_google_guava_guava",
+        "@maven//:com_google_protobuf_protobuf_java",
+        "@maven//:org_springframework_boot_spring_boot",
+        "@maven//:org_springframework_boot_spring_boot_autoconfigure",
+        "@maven//:org_springframework_boot_spring_boot_starter_web",
+        "@maven//:org_springframework_spring_web",
+        "@maven//:org_springframework_spring_webmvc",
+        "@maven//:org_threeten_threetenbp",
+    ],
+)
+
+java_binary(
+    name = "ApiServer",
+    runtime_deps = [":server"],
+)

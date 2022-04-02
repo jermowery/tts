@@ -1,0 +1,5 @@
+filegroup(
+    name = "static-files",
+    srcs = glob(["resources/**"]),
+    visibility = ["//visibility:public"],
+)

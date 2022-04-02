@@ -116,6 +116,7 @@ export class AppComponent implements OnInit {
   convertToAudio() {
     this.loading = true;
     const expectedNumLoadEvents = this.getNumLoadEventEstimate();
+    console.log("expected load events " + expectedNumLoadEvents);
     let numLoadEvents = 0;
     this.formGroup.disable();
     this.http
@@ -129,6 +130,7 @@ export class AppComponent implements OnInit {
         })
         .subscribe(
             response => {
+              console.log(response);
               switch (response.type) {
                 case HttpEventType.DownloadProgress:
                   numLoadEvents++;
@@ -163,7 +165,7 @@ export class AppComponent implements OnInit {
   private getNumLoadEventEstimate(): number {
     return (this.getPartsControl().value as Part[])
         .map(part => part.text)
-        .reduce((a, b) => a + b, '')
+        .reduce((a, b) => `${a}\n${b}`, '')
         .split('\n')
         .map(part => part.trim())
         .filter(part => part !== '')

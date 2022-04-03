@@ -27,7 +27,6 @@ export class AppComponent implements OnInit {
     'en-US-Wavenet-E',
     'en-US-Wavenet-F',
     'en-US-Wavenet-G',
-    'en-US-Wavenet-H',
   ];
 
   readonly maleVoices: readonly string[] = [
@@ -49,7 +48,8 @@ export class AppComponent implements OnInit {
   };
 
   loading = false;
-  loadingPercentage = 0;
+  loadedBytes = 0;
+  lastSavedDate = new Date();
 
   @ViewChildren(MatCard, {read: ElementRef})
   cards!: QueryList<ElementRef<HTMLElement>>;
@@ -115,9 +115,6 @@ export class AppComponent implements OnInit {
 
   convertToAudio() {
     this.loading = true;
-    const expectedNumLoadEvents = this.getNumLoadEventEstimate();
-    console.log("expected load events " + expectedNumLoadEvents);
-    let numLoadEvents = 0;
     this.formGroup.disable();
     this.http
         .post(environment.apiPath, this.formGroup.value, {
@@ -130,17 +127,14 @@ export class AppComponent implements OnInit {
         })
         .subscribe(
             response => {
-              console.log(response);
               switch (response.type) {
                 case HttpEventType.DownloadProgress:
-                  numLoadEvents++;
-                  this.loadingPercentage =
-                      (numLoadEvents / expectedNumLoadEvents);
+                  this.loadedBytes = response.loaded;
                   this.changeDetectorRef.markForCheck();
                   break;
                 case HttpEventType.Response:
                   this.loading = false;
-                  this.loadingPercentage = 0;
+                  this.loadedBytes = 0;
                   this.formGroup.enable();
                   let url = window.URL.createObjectURL(response.body!);
                   let a = document.createElement('a');
@@ -157,24 +151,15 @@ export class AppComponent implements OnInit {
             e => {
               console.log(e);
               this.loading = false;
-              this.loadingPercentage = 0;
+              this.loadedBytes = 0;
               this.formGroup.enable();
             });
-  }
-
-  private getNumLoadEventEstimate(): number {
-    return (this.getPartsControl().value as Part[])
-        .map(part => part.text)
-        .reduce((a, b) => `${a}\n${b}`, '')
-        .split('\n')
-        .map(part => part.trim())
-        .filter(part => part !== '')
-        .length;
   }
 
   saveToLocalStorage() {
     const data = JSON.stringify(this.formGroup.value);
     localStorage.setItem('formValue', data);
+    this.lastSavedDate = new Date();
   }
 
   private restoreFromLocalStorage() {

@@ -4,6 +4,8 @@
       <mat-icon>menu</mat-icon>
     </button>
     <span>Text to speech</span>
+    <div class="spacer"></div>
+    <span class="last-saved-message mat-caption">Last saved: {{lastSavedDate | date:'medium'}}</span>
   </mat-toolbar-row>
 </mat-toolbar>
 <mat-sidenav-container class="sidenav-container">
@@ -13,22 +15,12 @@
         <mat-icon inline class="sidenav-icon">save</mat-icon>
         Save
       </button>
-      <input
-        type="file"
-        hidden="true"
-        #uploadFileInput
-        (change)="loadPartsFromFile()"
-        accept="application/json">
+      <input type="file" hidden="true" #uploadFileInput (change)="loadPartsFromFile()" accept="application/json">
       <button type="button" mat-button (click)="uploadFileInput.click()">
         <mat-icon class="upload-icon sidenav-icon" inline>folder_open</mat-icon>
         Load
       </button>
-      <input
-        type="file"
-        hidden="true"
-        #parseFileInput
-        (change)="parseFromFile()"
-        accept="text/plain">
+      <input type="file" hidden="true" #parseFileInput (change)="parseFromFile()" accept="text/plain">
       <button type="button" mat-button (click)="parseFileInput.click()">
         <mat-icon inline class="sidenav-icon">upload</mat-icon>
         Parse from text
@@ -44,12 +36,12 @@
           </mat-card-title>
           <mat-card-content>
             <div *ngFor="let voiceCustomization of getVoiceCustomizationsControl().controls; let i = index"
-              [formGroup]="voiceCustomization">
+              [formGroup]="voiceCustomization" class="voice-controls-container">
               <mat-form-field class="voiceId-select">
                 <mat-label>
                   Original voice
                 </mat-label>
-                <mat-select formControlName="voiceId">
+                <mat-select formControlName="voiceId" (selectionChange)="voiceSample.load()">
                   <mat-optgroup label="female">
                     <mat-option *ngFor="let voice of femaleVoices" [value]="voice">
                       {{ voice }}
@@ -66,7 +58,17 @@
                 <mat-label>New name</mat-label>
                 <input matInput formControlName="customization">
               </mat-form-field>
-              <button mat-icon-button (click)="removeVoiceCustomization(i)" class="delete-voice-button">
+              <audio preload="none" #voiceSample>
+                <source
+                  src="https://cloud.google.com/text-to-speech/docs/audio/{{voiceCustomization.get('voiceId').value}}.wav"
+                  type="audio/wav">
+              </audio>
+              <button mat-icon-button (click)="voiceSample.play()" class="test-voice-button" type="button"
+                [matTooltip]="'Play sample of this voice'">
+                <mat-icon>audio_file</mat-icon>
+              </button>
+              <button mat-icon-button (click)="removeVoiceCustomization(i)" class="delete-voice-button" type="button"
+                [matTooltip]="'Remove this voice customization'">
                 <mat-icon>delete</mat-icon>
               </button>
             </div>
@@ -83,7 +85,7 @@
           <mat-card-content>
             <mat-form-field>
               <mat-label>Voice</mat-label>
-              <mat-select formControlName="voice">
+              <mat-select formControlName="voice" (selectionChange)="voiceSample.load()">
                 <mat-optgroup label="female">
                   <mat-option *ngFor="let voice of femaleVoices" [value]="voice">
                     {{ getVoiceDisplayName(voice) }}
@@ -97,8 +99,15 @@
               </mat-select>
             </mat-form-field>
             &ngsp;
-            <a href="https://cloud.google.com/text-to-speech/docs/voices" target="_blank" rel="noopener" mat-stroked-button
-              color="accent">List of voices</a>
+            <audio preload="none" #voiceSample>
+              <source
+                src="https://cloud.google.com/text-to-speech/docs/audio/{{part.get('voice').value}}.wav"
+                type="audio/wav">
+            </audio>
+            <button mat-icon-button (click)="voiceSample.play()" class="test-voice-button" type="button"
+              [matTooltip]="'Play sample of this voice'">
+              <mat-icon>audio_file</mat-icon>
+            </button>
             <br>
             <mat-tab-group dynamicHeight (selectedTabChange)="setTypeFormControlValue(i, $event)"
               [selectedIndex]="getTypeTabIndex(i)">
@@ -138,8 +147,8 @@
           </button>
         </div>
         <div class="progress-container" *ngIf="loading">
-          <span>{{loadingPercentage | percent}}</span>
-          <mat-progress-bar [value]="loadingPercentage * 100" color="accent" class="progress-bar"></mat-progress-bar>
+          <span>{{ loadedBytes }} bytes</span>
+          <mat-progress-bar mode="indeterminate" color="accent" class="progress-bar"></mat-progress-bar>
         </div>
       </form>
     </div>
